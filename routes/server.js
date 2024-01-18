@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 require('../config/dbConnection');
 
-//const userRouter = require('../routes/userRoute');
+const userRouter = require('../routes/userRoute');
 const { registerTeacher } = require('../database/teacher/addTeacher');
 
 const app = express();
@@ -19,7 +19,7 @@ app.use(cors());
 app.set('views', path.join(__dirname, '..', 'views'));
 app.set('view engine', 'ejs');
 
-//app.use('/api', userRouter);
+app.use('/api', userRouter);
 
 // error handling
 app.use((err, req, res, next) => {
