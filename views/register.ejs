@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Register - Edu-Mo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row bg-primary p-5 text-white">
+            <div class="col-12">
+                <h1>Edu-Mo</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navbar-expand-sm bg-light navbar-light">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav">
+                            <!-- <li class="nav-item">
+                                <a class="nav-link" href="login.html">Login</a> 
+                            </li> -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/contact">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <h2 class="text-center mb-4">Register</h2>
+                    <form action="/register" method="POST">
+                        <div class="mb-3">
+                            <label for="userId" class="form-label">User ID:</label>
+                            <input type="text" class="form-control" id="userId" name="userId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">User Name:</label>
+                            <input type="text" class="form-control" id="userName" name="userName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phn_no" class="form-label">Phone No:</label>
+                            <input type="text" class="form-control" id="phn_no" name="phn_no" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bank_acc" class="form-label">Bank Account No:</label>
+                            <input type="text" class="form-control" id="bank_acc" name="bank_acc" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address:</label>
+                            <input type="text" class="form-control" id="address" name="address" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="birthdate" class="form-label">Birth Date:</label>
+                            <input type="date" class="form-control" id="birthdate" name="birthdate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="hallId" class="form-label">Hall Id:</label>
+                            <input type="text" class="form-control" id="hallId" name="hallId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nid" class="form-label">NID:</label>
+                            <input type="text" class="form-control" id="nid" name="nid" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="departmentId" class="form-label">Department Id:</label>
+                            <input type="text" class="form-control" id="departmentId" name="departmentId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="designation" class="form-label">Designation:</label>
+                            <input type="text" class="form-control" id="designation" name="designation" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="joiningDate" class="form-label">Joining Date:</label>
+                            <input type="date" class="form-control" id="joiningDate" name="joiningDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="birthReg" class="form-label">Birth Registration No:</label>
+                            <input type="text" class="form-control" id="birthReg" name="birthReg" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password:</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('newPassword', 'new-eye-icon')">
+                                    <img id="new-eye-icon" src="eye-icon.png" alt="Eye Icon" style="width: 20px; height: 20px;">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password:</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('confirmPassword', 'confirm-eye-icon')">
+                                    <img id="confirm-eye-icon" src="eye-icon.png" alt="Eye Icon" style="width: 20px; height: 20px;">
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                    <p class="mt-2">Already have an account? <a href="/login">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(inputId, eyeIconId) {
+            var passwordInput = document.getElementById(inputId);
+            var eyeIcon = document.getElementById(eyeIconId);
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.src = "eye-icon.png"; // Replace with your image path for open eye
+            } else {
+                passwordInput.type = "password";
+                eyeIcon.src = "eye-icon-close.png"; // Replace with your image path for closed eye
+            }
+        }
+    </script>
+</body>
+
+</html>
