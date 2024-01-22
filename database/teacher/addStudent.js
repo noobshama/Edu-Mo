@@ -2,18 +2,23 @@
 const pool = require("../../config/dbConnection");
 const bcrypt = require('bcrypt');
 
-const registerAdmin = async (adminData) => {
+const addStudentFunction = async (studentData) => {
     try {
-        const { userId, userName, newPassword} = adminData;
+        const { studentId, studentName, hallId, deptId, session, isResident, semester, password, teacherId, userId} = studentData;
 
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         const query = `
-            INSERT INTO TEACHER (
-            TEACHER_ID, 
-            TEACHER_NAME,
-            ISADMIN
-            ) VALUES (?,?,?)
+            INSERT INTO STUDENT (
+            STUDENT_ID, 
+            STUDENT_NAME,
+            HALL_ID,
+            DEPT_ID,
+            SESSION,
+            IS_RESIDENT,
+            SEMESTER,
+            TEACHER_ID
+            ) VALUES (?,?,?,?,?, IF(? = 'true', 1, 0),?,?)
         `;
 
         const query2 = `
@@ -25,11 +30,11 @@ const registerAdmin = async (adminData) => {
         const binds = { userId };
 
         const values = [
-            userId, userName, true// phn_no, email, bank_acc, address, birthdate, hallId, nid, departmentId, designation, joiningDate, birthReg,
+            studentId, studentName, hallId, deptId, session, isResident, semester, teacherId
         ];
 
         const values2 = [
-            userId, hashedPassword, 'admin'
+            studentId, hashedPassword, 'student'
         ];
 
         console.log("Query 1:", query, "Values 1:", values);
@@ -51,14 +56,14 @@ const registerAdmin = async (adminData) => {
             }
         });
 
-        console.log("Admin registration successful");
+        console.log("Student added successfully");
 
-        console.log(userId);
-        return { success: true, message: 'Admin registration successful', userId};
+        console.log(studentId);
+        return { success: true, message: 'Student added successfully', studentId};
     } catch (error) {
-        console.error('Error during admin registration:', error);
+        console.error('Error during student addition:', error);
         return { success: false, message: 'Internal Server Error', error: error.message };
     }
 };
 
-module.exports = { registerAdmin };
+module.exports = { addStudentFunction };

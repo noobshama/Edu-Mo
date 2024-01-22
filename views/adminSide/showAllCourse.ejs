@@ -1,0 +1,14 @@
+<table style="width:100%">
+    <tr>
+        <th>Rank</th>
+        <th>UserId</th>
+        <th>Score</th>
+    </tr>
+    <% for (let i = 0; i < Math.min(3, rankedProfitArray.length); i++) { %>
+        <tr>
+            <td><%= i + 1 %></td> <!-- Adding 1 to start ranking from 1 instead of 0 -->
+            <td><%= rankedProfitArray[i].userId %></td>
+            <td><%= rankedProfitArray[i].score %></td>      
+        </tr>
+    <% } %>
+</table>

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Add Department - EDUCATION MOODLE (Edu-Mo)</title>
+    <title>Add Course - EDUCATION MOODLE (Edu-Mo)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -40,15 +40,15 @@
             </div>
         </div>
 
-        <!-- Add Department Section -->
-        <div id="add-department" class="my-5">
+        <!-- Add Course Section -->
+        <div id="add-course" class="my-5">
             <div class="row bg-primary p-5 text-white">
                 <div class="col-12">
-                    <h2>Add Department</h2>
+                    <h2>Add Course</h2>
                 </div>
             </div>
-            <!-- Add Department Form Section -->
-            <form action="/addDepartment" method="post">
+            <!-- Add Course Form Section -->
+            <form action="/adminSide/addDepartment" method="POST">
                 <div class="mb-3">
                     <label for="deptId" class="form-label">Department ID</label>
                     <input type="text" class="form-control" id="deptId" name="deptId" required>
@@ -61,7 +61,7 @@
                     <label for="deptHead" class="form-label">Department Head</label>
                     <input type="text" class="form-control" id="deptHead" name="deptHead" required>
                 </div>
-
+                <input type="hidden" name="userId" value="<%= userId %>">
                 <button type="submit" class="btn btn-primary">Add Department</button>
             </form>
         </div>

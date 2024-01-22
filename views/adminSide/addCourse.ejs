@@ -48,7 +48,7 @@
                 </div>
             </div>
             <!-- Add Course Form Section -->
-            <form action="/addCourse" method="post">
+            <form action="/adminSide/addCourse" method="POST">
                 <div class="mb-3">
                     <label for="courseId" class="form-label">Course ID</label>
                     <input type="text" class="form-control" id="courseId" name="courseId" required>
@@ -65,7 +65,7 @@
                     <label for="deptId" class="form-label">Department ID</label>
                     <input type="text" class="form-control" id="deptId" name="deptId" required>
                 </div>
-
+                <input type="hidden" name="userId" value="<%= userId %>">
                 <button type="submit" class="btn btn-primary">Add Course</button>
             </form>
         </div>

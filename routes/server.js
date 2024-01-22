@@ -11,6 +11,10 @@ const { registerAdmin } = require('../database/teacher/addAdmin');
 const { getInfo } = require('../database/teacher/getAdminInfo');
 const query = require("../database/teacher/getAdminInfo");
 const { logInInfo } = require("../database/userLogInInfo");
+const { addStudentFunction } = require("../database/teacher/addStudent");
+const { addCourseFunction } = require("../database/teacher/addCourse");
+const { addDepartmentFunction } = require("../database/teacher/addDepartment");
+//const { addTeacherFunction } = require("../database/teacher/addTeacher");
 
 const app = express();
 
@@ -112,17 +116,80 @@ app.get('/adminSide/personalInfo', async (req, res) => {
     }
 });
 
-app.get('/adminSide/addCourse', (req, res) => {
-    res.render('adminSide/addCourse');
-});
+
 
 app.get('/adminSide/addDepartment', (req, res) => {
-    res.render('adminSide/addDepartment');
+    const userId = req.query.userId;
+    console.log(userId);
+    res.render('adminSide/addDepartment', { userId });
+
 });
 
 app.get('/adminSide/addStudent', (req, res) => {
-    res.render('adminSide/addStudent');
+    const userId = req.query.userId;
+    res.render('adminSide/addStudent', { userId });
 });
+app.get('/adminSide/addCourse', (req, res) => {
+    const userId = req.query.userId;
+    res.render('adminSide/addCourse', { userId });
+});
+
+app.post('/adminSide/addStudent', async (req, res) => {
+    try {
+        console.log('add student');
+        const result = await addStudentFunction(req.body);
+        console.log(result.studentId);
+        if (result.success) {
+            console.log('adminSide/adminHome: ', req.body.userId);
+            res.redirect(`/adminSide/adminHome?userId=${req.body.userId}`);
+            
+        } else {
+            res.status(500).json(result);
+        }
+    } catch (error) {
+        console.error('Error during registration:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
+app.post('/adminSide/addCourse', async (req, res) => {
+    try {
+        console.log('add course');
+        const result = await addCourseFunction(req.body);
+        console.log(result.courseId);
+        if (result.success) {
+            console.log('adminSide/adminHome: ', req.body.userId);
+            res.redirect(`/adminSide/adminHome?userId=${req.body.userId}`);
+            
+        } else {
+            res.status(500).json(result);
+        }
+    } catch (error) {
+        console.error('Error during registration:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
+app.post('/adminSide/addDepartment', async (req, res) => {
+    try {
+        console.log('add department');
+        const result = await addDepartmentFunction(req.body);
+        console.log(result.deptId);
+        if (result.success) {
+            console.log('adminSide/adminHome: ', req.body.userId);
+            res.redirect(`/adminSide/adminHome?userId=${req.body.userId}`);
+            
+        } else {
+            res.status(500).json(result);
+        }
+    } catch (error) {
+        console.error('Error during registration:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
+
+// app.get('/adminSide/addTeacher', (req, res) => {
+//     const userId = req.query.userId;
+//     res.render('adminSide/addTeacher', { userId });
+// });
 
 app.use('/home', require('../routes/authorization'));
 

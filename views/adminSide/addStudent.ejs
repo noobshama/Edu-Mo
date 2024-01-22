@@ -50,7 +50,7 @@
 
         <!-- Add Student Form Section -->
         <div id="add-student" class="my-5">
-            <form action="/addStudent" method="post">
+            <form action="/adminSide/addStudent" method="POST">
                 <div class="mb-3">
                     <label for="studentId" class="form-label">Student ID</label>
                     <input type="text" class="form-control" id="studentId" name="studentId" required>
@@ -59,7 +59,7 @@
                     <label for="studentName" class="form-label">Student Name</label>
                     <input type="text" class="form-control" id="studentName" name="studentName" required>
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label for="phnNo" class="form-label">Phone Number</label>
                     <input type="text" class="form-control" id="phnNo" name="phnNo" required>
                 </div>
@@ -78,15 +78,15 @@
                 <div class="mb-3">
                     <label for="birthDate" class="form-label">Birth Date</label>
                     <input type="date" class="form-control" id="birthDate" name="birthDate" required>
-                </div>
+                </div> -->
                 <div class="mb-3">
                     <label for="hallId" class="form-label">Hall ID</label>
                     <input type="text" class="form-control" id="hallId" name="hallId" required>
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label for="nid" class="form-label">NID</label>
                     <input type="text" class="form-control" id="nid" name="nid" required>
-                </div>
+                </div> -->
                 <div class="mb-3">
                     <label for="deptId" class="form-label">Department ID</label>
                     <input type="text" class="form-control" id="deptId" name="deptId" required>
@@ -97,7 +97,14 @@
                 </div>
                 <div class="mb-3">
                     <label for="isResident" class="form-label">Is Resident</label>
-                    <input type="text" class="form-control" id="isResident" name="isResident" required>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="isResident" id="residentYes" value="true">
+                        <label class="form-check-label" for="residentYes">Yes, resident</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="isResident" id="residentNo" value="false" checked>
+                        <label class="form-check-label" for="residentNo">No, not resident</label>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="semester" class="form-label">Semester</label>
@@ -111,13 +118,13 @@
                     <label for="teacherId" class="form-label">Teacher ID</label>
                     <input type="text" class="form-control" id="teacherId" name="teacherId" required>
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label for="birthReg" class="form-label">Birth Registration</label>
                     <input type="text" class="form-control" id="birthReg" name="birthReg" required>
-                </div>
+                </div> -->
 
                 <!-- Add more form elements as needed -->
-
+                <input type="hidden" name="userId" value="<%= userId %>">
                 <button type="submit" class="btn btn-primary">Add Student</button>
             </form>
         </div>
