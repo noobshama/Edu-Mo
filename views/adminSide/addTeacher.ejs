@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Add Teacher - EDUCATION MOODLE (Edu-Mo)</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #007bff;
+        }
+
+        .navbar-brand,
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+        .bg-primary {
+            background-color: #007bff !important;
+            color: #ffffff;
+        }
+
+        /* Optional: Add more styles as needed for specific elements */
+        /* For example, you can style the form elements, buttons, etc. */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row bg-primary p-5 text-white">
+            <div class="col-12">
+                <h1>Edu-Mo</h1>
+            </div>
+        </div>
+
+       
+        <div id="add-department" class="my-5">
+            <div class="row bg-primary p-5 text-white">
+                <div class="col-12">
+                    <h2>Add Teacher</h2>
+                </div>
+            </div>
+
+        <!-- Add Student Form Section -->
+        <div id="add-teacher" class="my-5">
+            <form action="/adminSide/addTeacher" method="POST">
+                <div class="mb-3">
+                    <label for="teacherId" class="form-label">Teacher ID</label>
+                    <input type="text" class="form-control" id="teacherId" name="teacherId" required>
+                </div>
+                <div class="mb-3">
+                    <label for="TeacherName" class="form-label">Teacher Name</label>
+                    <input type="text" class="form-control" id="teacherName" name="teacherName" required>
+                </div>
+                <!-- <div class="mb-3">
+                    <label for="phnNo" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" id="phnNo" name="phnNo" required>
+                </div>
+                <div class="mb-3">
+                    <label for="emailAddress" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="emailAddress" name="emailAddress" required>
+                </div>
+                <div class="mb-3">
+                    <label for="bankAcc" class="form-label">Bank Account</label>
+                    <input type="text" class="form-control" id="bankAcc" name="bankAcc" required>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="birthDate" class="form-label">Birth Date</label>
+                    <input type="date" class="form-control" id="birthDate" name="birthDate" required>
+                </div> -->
+                <!-- <div class="mb-3">
+                    <label for="hallId" class="form-label">Hall ID</label>
+                    <input type="text" class="form-control" id="hallId" name="hallId" required>
+                </div> -->
+                <!-- <div class="mb-3">
+                    <label for="nid" class="form-label">NID</label>
+                    <input type="text" class="form-control" id="nid" name="nid" required>
+                </div> -->
+                <div class="mb-3">
+                    <label for="deptId" class="form-label">Department ID</label>
+                    <input type="text" class="form-control" id="deptId" name="deptId" required>
+                </div>
+                <div class="mb-3">
+                    <label for="designation" class="form-label">Designation</label>
+                    <input type="text" class="form-control" id="designation" name="designation" required>
+                </div>
+                <div class="mb-3">
+                    <label for="joiningDate" class="form-label">Joining Date</label>
+                    <input type="date" class="form-control" id="joiningDate" name="joiningDate" required>
+                </div>
+                <!-- <div class="mb-3">
+                    <label for="session" class="form-label">Session</label>
+                    <input type="text" class="form-control" id="session" name="session" required>
+                </div> -->
+                <!-- <div class="mb-3">
+                    <label for="isResident" class="form-label">Is Resident</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="isResident" id="residentYes" value="true">
+                        <label class="form-check-label" for="residentYes">Yes, resident</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="isResident" id="residentNo" value="false" checked>
+                        <label class="form-check-label" for="residentNo">No, not resident</label>
+                    </div>
+                </div> -->
+                <!-- <div class="mb-3">
+                    <label for="semester" class="form-label">Semester</label>
+                    <input type="text" class="form-control" id="semester" name="semester" required>
+                </div> -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <!-- <div class="mb-3">
+                    <label for="teacherId" class="form-label">Teacher ID</label>
+                    <input type="text" class="form-control" id="teacherId" name="teacherId" required>
+                </div> -->
+                <!-- <div class="mb-3">
+                    <label for="birthReg" class="form-label">Birth Registration</label>
+                    <input type="text" class="form-control" id="birthReg" name="birthReg" required>
+                </div> -->
+
+                <!-- Add more form elements as needed -->
+                <input type="hidden" name="userId" value="<%= userId %>">
+                <button type="submit" class="btn btn-primary">Add Teacher</button>
+            </form>
+        </div>
+
+    </div>
+</body>
+
+</html>
