@@ -1,9 +1,9 @@
 const pool = require("../../config/dbConnection");
 const bcrypt = require('bcrypt');
 
-const registerTeacher = async (teacherData) => {
+const registerAdmin = async (adminData) => {
     try {
-        const { userId, userName, phn_no, email, bank_acc, address, birthdate, hallId, nid, departmentId, designation, joiningDate, birthReg, newPassword } = teacherData;
+        const { userId, userName, phn_no, email, bank_acc, address, birthdate, hallId, nid, departmentId, designation, joiningDate, birthReg, newPassword} = adminData;
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
@@ -22,7 +22,7 @@ const registerTeacher = async (teacherData) => {
             DESIGNATION,
             JOINING_DATE,
             BIRTH_REG,
-            PASSWORD
+            ISADMIN
             ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         `;
 
@@ -32,12 +32,14 @@ const registerTeacher = async (teacherData) => {
             ) VALUES (?,?,?)
         `;
 
+        const binds = { userId };
+
         const values = [
-            userId, userName, phn_no, email, bank_acc, address, birthdate, hallId, nid, departmentId, designation, joiningDate, birthReg, hashedPassword
+            userId, userName, phn_no, email, bank_acc, address, birthdate, hallId, nid, departmentId, designation, joiningDate, birthReg, true
         ];
 
         const values2 = [
-            userId, hashedPassword, 'teacher'
+            userId, hashedPassword, 'admin'
         ];
 
         console.log("Query 1:", query, "Values 1:", values);
@@ -50,7 +52,7 @@ const registerTeacher = async (teacherData) => {
                 console.log('Query 1 executed successfully');
             }
         });
-        
+
         await pool.query(query2, values2, (error, results) => {
             if (error) {
                 console.error('Error executing query 2:', error);
@@ -59,13 +61,14 @@ const registerTeacher = async (teacherData) => {
             }
         });
 
-        console.log("Teacher registration successful");
+        console.log("Admin registration successful");
 
-        return { success: true, message: 'Teacher registration successful' };
+        console.log(userId);
+        return { success: true, message: 'Admin registration successful', userId};
     } catch (error) {
-        console.error('Error during teacher registration:', error);
+        console.error('Error during admin registration:', error);
         return { success: false, message: 'Internal Server Error', error: error.message };
     }
 };
 
-module.exports = { registerTeacher };
+module.exports = { registerAdmin };

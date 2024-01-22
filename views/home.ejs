@@ -44,6 +44,10 @@
 
                 <form id="roleForm">
                     <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="role" id="admin" value="admin">
+                        <label class="form-check-label" for="admin">Admin</label>
+                    </div>
+                    <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="role" id="teacher" value="teacher">
                         <label class="form-check-label" for="teacher">Teacher</label>
                     </div>
@@ -73,9 +77,12 @@
             var selectedRole = document.querySelector('input[name="role"]:checked');
             if (selectedRole) {
                 var roleValue = selectedRole.value;
-                if (roleValue === "teacher") {
+                if (roleValue === "admin") {
                     window.location.href = "/register"; // Correct route
                 } else if (roleValue === "student") {
+                    window.location.href = "/login"; // Correct route
+                }
+                else if (roleValue === "teacher") {
                     window.location.href = "/login"; // Correct route
                 }
             }

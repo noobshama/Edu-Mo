@@ -27,6 +27,11 @@
                 eyeIcon.src = "eye-icon-close.png"; // Replace with your image path
             }
         }
+        function submitForm() {
+            console.log('Form submitted');
+            document.getElementById("loginForm").submit();
+            // Rest of your form submission logic
+        }
     </script>
 </head>
 
@@ -62,7 +67,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <h2 class="text-center mb-4">Login</h2>
-                    <form>
+                    <form id="loginForm" action="/login" method="post">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username:</label>
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -80,7 +85,7 @@
                             <input type="checkbox" class="form-check-input" id="rememberMe">
                             <label class="form-check-label" for="rememberMe">Remember me</label>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
                         <p class="mt-2">Forgot your password? <a href="#">Reset here</a></p>
                     </form>
                 </div>

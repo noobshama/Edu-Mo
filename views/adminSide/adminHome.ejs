@@ -26,16 +26,16 @@
                     <div class ="container-fluid">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link" href="personalInfo.ejs">Personal Information</a> 
+                                <a class="nav-link" href="/adminSide/personalInfo?userId=<%= userId %>">Personal Information</a> 
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="addStudent.ejs">Add Student</a> 
+                                <a class="nav-link" href="/adminSide/addStudent?userId=<%= userId %>">Add Student</a> 
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="addDepartment.ejs">Add Department</a>
+                                <a class="nav-link" href="/adminSide/addDepartment?userId=<%= userId %>">Add Department</a>
                               </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="addCourse.ejs">Add Course</a>
+                                <a class="nav-link" href="/adminSide/addCourse?userId=<%= userId %>">Add Course</a>
                               </li>
                               
                         </ul>

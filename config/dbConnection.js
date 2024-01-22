@@ -9,7 +9,6 @@ const pool = mysql.createPool({
     database: DB_NAME,
 });
 
-
 pool.getConnection(function (err, connection) {
     if (err) {
         console.error('Error connecting to the database:', err.message);
@@ -28,4 +27,3 @@ pool.on('error', function (err) {
 });
 
 module.exports = pool;
-
