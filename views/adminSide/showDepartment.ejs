@@ -52,11 +52,11 @@
             </tr>
         </thead>
         <tbody>
-            <% departments.forEach(department => { %>
+            <% AllDeptInfo.forEach(department => { %>
                 <tr>
-                    <td><%= department.department_id %></td>
-                    <td><%= department.department_name %></td>
-                    <td><%= department.department_head %></td>
+                    <td><%= department.DEPARTMENT_ID %></td>
+                    <td><%= department.DEPARTMENT_NAME %></td>
+                    <td><%= department.DEPARTMENT_HEAD %></td>
                     <!-- <td>
                         <a class="update-button" href="/updateDepartment/<%= department.department_id %>">Update</a>
                         

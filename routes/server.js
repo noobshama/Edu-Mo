@@ -157,13 +157,23 @@ app.get('/adminSide/personalInfo', async (req, res) => {
 app.get('/adminSide/showDepartment', async (req, res) => {
     try {
         const userId = req.query.userId;
-        const allDeptInfo=await query.getDepartmentInfo();
-        res.render("adminSide/showDepartment",{allDeptInfo: allDeptInfo.deptInfo, userId: userId});
+        const departmentData = await getDepartmentInfo();
+        console.log(typeof departmentData, departmentData);
+
+        // Check if departmentData contains the deptInfo array
+        if (departmentData && departmentData.deptInfo) {
+            res.render("adminSide/showDepartment", { AllDeptInfo: departmentData.deptInfo, userId: userId });
+        } else {
+            // Handle the case where departmentData.deptInfo is not available
+            res.status(404).send("Department information not available");
+        }
     } catch (error) {
-        console.error('Error during /adminSide/Department:', error);
+        console.error('Error during /adminSide/showDepartment:', error);
         res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
     }
 });
+
+
 
 
 
@@ -256,11 +266,6 @@ app.post('/adminSide/addTeacher', async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
     }
 });
-// app.get('/adminSide/addTeacher', (req, res) => {
-//     const userId = req.query.userId;
-//     res.render('adminSide/addTeacher', { userId });
-// });
-
 app.use('/home', require('../routes/authorization'));
 
 app.listen(7000, (error) => {

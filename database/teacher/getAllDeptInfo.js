@@ -8,9 +8,9 @@ async function getDepartmentInfo() {
             SELECT *
             FROM DEPARTMENT; 
         `;
-
+         console.log(query);
         const results = await new Promise((resolve, reject) => {
-            pool.query(query, allDept, (error, results) => {
+            pool.query(query, (error, results) => { // pass query directly, don't call the function
                 if (error) {
                     console.error('Error executing query:', error);
                     reject(error);
@@ -19,17 +19,9 @@ async function getDepartmentInfo() {
                 }
             });
         });
-
         if (results.length > 0) {
-            const deptInfoArray = results.map(result => ({
-                // Map each result to an object containing department information
-                deptId: result.DEPARTMENT_ID,
-                deptName: result.DEPARTMENT_NAME,
-                deptHead: result.DEPARTMENT_HEAD,
-                // Add more properties as needed
-            }));
-
-            return { success: true, message: 'Got department information', deptInfo: deptInfoArray };
+           
+            return { success: true, message: 'Got department information', deptInfo: results };
         } else {
             return { success: false, message: 'Department not found' };
         }
@@ -40,3 +32,6 @@ async function getDepartmentInfo() {
 }
 
 module.exports = { getDepartmentInfo };
+
+
+
