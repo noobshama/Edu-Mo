@@ -14,6 +14,8 @@ const {getTeacherInfo} = require("../database/teacher/getAdminInfo");
 const { getStudentInfo } = require('../database/student/getInfo');
 const {getInfo} = require("../database/teacher/getTeacherInfo");
 const {getDepartmentInfo} = require("../database/teacher/getAllDeptInfo");
+const {getCourseInfo} = require("../database/teacher/getAllCourseInfo");
+const {getSInfo} = require("../database/teacher/getAllStudentInfo");
 const { logInInfo } = require("../database/userLogInInfo");
 const { addStudentFunction } = require("../database/teacher/addStudent");
 const { addCourseFunction } = require("../database/teacher/addCourse");
@@ -169,6 +171,42 @@ app.get('/adminSide/showDepartment', async (req, res) => {
         }
     } catch (error) {
         console.error('Error during /adminSide/showDepartment:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
+app.get('/adminSide/showCourse', async (req, res) => {
+    try {
+        const userId = req.query.userId;
+        const courseData = await getCourseInfo();
+        console.log(typeof courseData, courseData);
+
+        // Check if departmentData contains the deptInfo array
+        if (courseData && courseData.courseInfo) {
+            res.render("adminSide/showCourse", { AllCourseInfo: courseData.courseInfo, userId: userId });
+        } else {
+            // Handle the case where departmentData.deptInfo is not available
+            res.status(404).send("course information not available");
+        }
+    } catch (error) {
+        console.error('Error during /adminSide/showCourse:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
+app.get('/adminSide/showStudentInfo', async (req, res) => {
+    try {
+        const userId = req.query.userId;
+        const studentData = await getSInfo();
+        console.log(typeof studentData, studentData);
+
+        // Check if departmentData contains the deptInfo array
+        if (studentData && studentData.studentInfo) {
+            res.render("adminSide/showStudentInfo", { AllStudentInfo: studentData.studentInfo, userId: userId });
+        } else {
+            // Handle the case where departmentData.deptInfo is not available
+            res.status(404).send("student information not available");
+        }
+    } catch (error) {
+        console.error('Error during /adminSide/showStudentInfo:', error);
         res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
     }
 });

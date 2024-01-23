@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Add Teacher - EDUCATION MOODLE (Edu-Mo)</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #007bff;
+        }
+
+        .navbar-brand,
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+        .bg-primary {
+            background-color: #007bff !important;
+            color: #ffffff;
+        }
+
+        /* Optional: Add more styles as needed for specific elements */
+        /* For example, you can style the form elements, buttons, etc. */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row bg-primary p-5 text-white">
+            <div class="col-12">
+                <h1>Edu-Mo</h1>
+            </div>
+        </div>
+
+    <h1>Student List</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Student Id</th>
+                <th>Student Name</th>
+                <th>Session</th>
+                <th>Semester</th>
+                <th>Resident</th>
+                <th>Department Name</th>
+                <th>Hall Name</th>
+                <th>Advisor</th>
+                <!-- //<th>Actions</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <% AllStudentInfo.forEach(student => { %>
+                <tr>
+                    <td><%= student.STUDENT_ID %></td>
+                    <td><%= student.STUDENT_NAME %></td>
+                    <td><%= student.SESSION %></td>
+                    <td><%= student.SEMESTER %></td>
+                    <td><%= student.IS_RESIDENT %></td>
+                    <td><%= student.DEPARTMENT_NAME %></td>
+                    <td><%= student.HALL_NAME %></td>
+                    <td><%= student.TEACHER_NAME %></td>
+
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+</body>
+
+</html>
