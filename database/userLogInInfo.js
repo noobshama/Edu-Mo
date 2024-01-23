@@ -49,7 +49,7 @@ const logInInfo = async (getlogInInfo) => {
     return { success: false, message: 'User not found or invalid credentials' };
 
   } catch (error) {
-    console.error('Error during admin registration:', error);
+    console.error('Error during log in:', error);
     return { success: false, message: 'Internal Server Error', error: error.message };
   }
 };

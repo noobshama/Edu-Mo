@@ -11,6 +11,8 @@ const { registerAdmin } = require('../database/teacher/addAdmin');
 //const { getInfo } = require('../database/teacher/getAdminInfo');
 //const query = require("../database/teacher/getAdminInfo");
 const {getTeacherInfo} = require("../database/teacher/getAdminInfo");
+const { getStudentInfo } = require('../database/student/getInfo');
+const {getInfo} = require("../database/teacher/getTeacherInfo");
 const {getDepartmentInfo} = require("../database/teacher/getAllDeptInfo");
 const { logInInfo } = require("../database/userLogInInfo");
 const { addStudentFunction } = require("../database/teacher/addStudent");
@@ -67,7 +69,7 @@ app.post('/login', async (req, res) =>{
                 res.redirect(`/studentSide/studentHome?userId=${result.username}`);
             }
             else if(result.role === 'teacher') {
-                res.redirect(`/teacherSide/personalInfo?userId=${result.username}`);
+                res.redirect(`/teacherSide/teacherHome?userId=${result.username}`);
             }
             else if (result.role === 'admin'){
                 res.redirect(`/adminSide/adminHome?userId=${result.username}`);
@@ -105,6 +107,41 @@ app.get('/adminSide/adminHome', (req, res) => {
     const userId = req.query.userId;
     console.log('user Id at admin home page: ', userId);
     res.render('adminSide/adminHome', { userId });
+});
+
+app.get('/studentSide/studentHome', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at student home page: ', userId);
+    res.render('studentSide/studentHome', { userId });
+});
+app.get('/studentSide/personalInfo', async (req, res) => {
+    try {
+        console.log('qqqqqqqqqqq');
+        const userId = req.query.userId;
+        const userInfo=await getStudentInfo(userId);
+        console.log(userInfo);
+        res.render("studentSide/personalInfo",{userInfo: userInfo.studentInfo, userId: userId});
+    } catch (error) {
+        console.error('Error during /studentSide/personalInfo:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
+app.get('/teacherSide/teacherHome', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at teacher home page: ', userId);
+    res.render('teacherSide/teacherHome', { userId });
+});
+app.get('/teacherSide/personalInfo', async (req, res) => {
+    try {
+        console.log('qqqqqqqqqqq');
+        const userId = req.query.userId;
+        const userInfo=await getInfo(userId);
+        console.log(userInfo);
+        res.render("teacherSide/personalInfo",{userInfo: userInfo.teacherInfo, userId: userId});
+    } catch (error) {
+        console.error('Error during /teacherSide/personalInfo:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
 });
 
 app.get('/adminSide/personalInfo', async (req, res) => {
