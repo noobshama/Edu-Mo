@@ -21,7 +21,7 @@ const { addStudentFunction } = require("../database/teacher/addStudent");
 const { addCourseFunction } = require("../database/teacher/addCourse");
 const { addDepartmentFunction } = require("../database/teacher/addDepartment");
 const { addTeacherFunction } = require("../database/teacher/addTeacher");
-
+const { getDeptNameInfo } = require("../database/teacher/getDeptNameInfo");
 const app = express();
 
 app.use(express.json());
@@ -230,10 +230,26 @@ app.get('/adminSide/addCourse', (req, res) => {
     const userId = req.query.userId;
     res.render('adminSide/addCourse', { userId });
 });
-app.get('/adminSide/addTeacher', (req, res) => {
-    const userId = req.query.userId;
-    console.log(userId);
-    res.render('adminSide/addTeacher', { userId });
+app.get('/adminSide/addTeacher', async(req, res) => {
+    try {
+        const userId = req.query.userId;
+        const deptNameData = await getDeptNameInfo();
+        console.log(typeof deptNameData, deptNameData);
+
+        // Check if departmentData contains the deptInfo array
+        if (deptNameData && deptNameData.deptNameInfo) {
+            res.render("adminSide/addTeacher", { AllDeptNameInfo: deptNameData.deptNameInfo, userId: userId });
+        } else {
+            // Handle the case where departmentData.deptInfo is not available
+            res.status(404).send("Department information not available");
+        }
+    } catch (error) {
+        console.error('Error during /adminSide/addTeacher:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+    // const userId = req.query.userId;
+    // console.log(userId);
+    // res.render('adminSide/addTeacher', { userId });
 });
 
 app.post('/adminSide/addStudent', async (req, res) => {

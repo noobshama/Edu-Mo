@@ -1,76 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Add Course - EDUCATION MOODLE (Edu-Mo)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Bootstrap Select Picker CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Select Picker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
     <style>
         body {
-            background-color: #f8f9fa;
+            font-family: 'Nunito', 'sans-serif';
+            background-color: #f4f7fc;
+            color: #09090a;
         }
-
-        .navbar {
-            background-color: #007bff;
-        }
-
-        .navbar-brand,
-        .navbar-nav .nav-link {
-            color: #ffffff !important;
-        }
-
-        .bg-primary {
-            background-color: #007bff !important;
+        .navbar, .bg-primary, .btn-primary {
+            background-color: #0056b3; /* Darker shade for better contrast */
             color: #ffffff;
         }
+        .form-control, .form-select, .selectpicker {
+            border-radius: 0.25rem;
+            border: 1px solid #ced4da;
+            width: 100%; /* Ensure the select picker box takes up full width */
+        }
+        .form-label {
+            color: #495057;
+        }
+        .btn-primary {
+            border-color: #004085;
+            color: #fff;
+            font-size: 1rem;
+            padding: 0.375rem 0.75rem;
+            transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+        }
+        .btn-primary:hover {
+            background-color: #003675;
+            border-color: #002752;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .selectpicker .btn {
+            border: 1px solid #ced4da;
+            width: 100%; /* Ensure the select picker button takes up full width */
+            text-align: left; /* Align text to the left within the button */
+        }
+        .btn-outline-secondary {
+            color: #007bff;
+            border-color: #007bff;
+        }
 
-        /* Optional: Add more styles as needed for specific elements */
-        /* For example, you can style the form elements, buttons, etc. */
+        .btn-outline-secondary:hover {
+            color: #ffffff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
     </style>
 </head>
-
 <body>
     <div class="container">
-        <div class="row bg-primary p-5 text-white">
+        <div class="row bg-primary p-3 text-white">
             <div class="col-12">
-                <h1>Edu-Mo</h1>
+                <h1 class="text-center">Edu-Mo</h1>
             </div>
         </div>
 
-        <!-- Add Course Section -->
-        <div id="add-course" class="my-5">
-            <div class="row bg-primary p-5 text-white">
+        <div id="add-teacher" >
+            <div class="row bg-primary p-3 text-white">
                 <div class="col-12">
-                    <h2>Add Course</h2>
+                    <h2 class="text-center">Add Course</h2>
                 </div>
             </div>
             <!-- Add Course Form Section -->
+            <div class="my-5 form-container">
             <form action="/adminSide/addCourse" method="POST">
                 <div class="mb-3">
-                    <label for="courseId" class="form-label">Course ID</label>
-                    <input type="text" class="form-control" id="courseId" name="courseId" required>
+                    <label for="courseCode" class="form-label">Course Code</label>
+                    <input type="text" class="form-control" id="courseCode" name="courseCode" required>
                 </div>
                 <div class="mb-3">
                     <label for="courseName" class="form-label">Course Name</label>
                     <input type="text" class="form-control" id="courseName" name="courseName" required>
                 </div>
                 <div class="mb-3">
-                    <label for="creditHour" class="form-label">Credit Hour</label>
-                    <input type="text" class="form-control" id="creditHour" name="creditHour" required>
+                    <label for="prerequisites" class="form-label">Pre-requisite Course Name</label>
+                    <select class="selectpicker form-select" id="prerequisites" name="prerequisites[]" multiple>
+                        <option value="course1">Course 1</option>
+                        <option value="course2">Course 2</option>
+                        <option value="course3">Course 3</option>
+                    </select>
                 </div>
                 <div class="mb-3">
-                    <label for="deptId" class="form-label">Department ID</label>
-                    <input type="text" class="form-control" id="deptId" name="deptId" required>
+                    <label for="deptName" class="form-label">Department Name</label>
+                    <select class="selectpicker form-select" id="deptName" name="deptName" >
+                        <option value="" disabled selected>Select Department</option>
+                        <option value="dept1">Department 1</option>
+                        <!-- Additional department options can be dynamically populated here -->
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="level" class="form-label">Level</label>
+                    <select class="form-select" id="level" name="level" required>
+                        <option value="" disabled selected>Select Level</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="term" class="form-label">Term</label>
+                    <select class="form-select" id="term" name="term" required>
+                        <option value="" disabled selected>Select Term</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="credit" class="form-label">Credit</label>
+                    <select class="form-select" id="credit" name="credit" required>
+                        <option value="" disabled selected>Select Credit</option>
+                        <option value="4.00">4.00</option>
+                        <option value="3.00">3.00</option>
+                        <option value="1.50">1.50</option>
+                        <option value="0.75">0.75</option>
+                    </select>
                 </div>
                 <input type="hidden" name="userId" value="<%= userId %>">
-                <button type="submit" class="btn btn-primary">Add Course</button>
+                <button type="submit" class="btn btn-outline-secondary">Add Course</button>
             </form>
         </div>
-
     </div>
-</body>
+    </div>
 
+    <script>
+        $(document).ready(function() {
+            $('.selectpicker').selectpicker();
+        });
+    </script>
+</body>
 </html>

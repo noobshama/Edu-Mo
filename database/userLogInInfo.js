@@ -4,16 +4,16 @@ const bcrypt = require('bcrypt');
 
 const logInInfo = async (getlogInInfo) => {
   try {
-    const { username, password } = getlogInInfo;
+    const { userid, password } = getlogInInfo;
     const query = `
         SELECT 
             USER_ID,PASSWORD,ROLE
         FROM 
-            USERS
+            USER
         WHERE USER_ID = ?
             `;
 
-    const values = [ username ];
+    const values = [ userid ];
 
     const result = await new Promise((resolve, reject) => {
       pool.query(query, values, (error, results) => {
@@ -34,15 +34,15 @@ const logInInfo = async (getlogInInfo) => {
       if (isPasswordMatch) {
         let role = user.ROLE;
         if (role === 'student') {
-          return { success: true, message: 'Student LogIn successful', username, role };
+          return { success: true, message: 'Student LogIn successful', userid, role };
         }
 
         else if (role === 'teacher') {
-          return { success: true, message: 'Teacher LogIn successful', username, role };
+          return { success: true, message: 'Teacher LogIn successful', userid, role };
         }
 
         else if (role === 'admin') {
-          return { success: true, message: 'Admin LogIn successful', username, role };
+          return { success: true, message: 'Admin LogIn successful', userid, role };
         }
       }
     }

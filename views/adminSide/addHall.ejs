@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Add Course - EDUCATION MOODLE (Edu-Mo)</title>
+    <title>Add Hall - EDUCATION MOODLE (Edu-Mo)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -29,12 +29,10 @@
             color: #ffffff;
         }
 
-        /* Form style */
         .form-container {
             background-color: #ffffff;
             padding: 20px;
             border-radius: 10px;
-           
         }
 
         .form-control {
@@ -56,43 +54,48 @@
 
 <body>
     <div class="container">
-        <div class="row bg-primary p-1 text-white">
-            <div class="col-12 text-center">
-                <h1>Edu-Mo</h1>
+        <div class="row bg-primary  text-white">
+            <div class="col-12">
+                <h1 class="text-center">Edu-Mo</h1>
             </div>
         </div>
 
-        <!-- Add Course Section -->
-        <div id="add-course" >
-            <div class="row bg-primary p-3 text-white mb-4">
-                <div class="col-12 text-center">
-                    <h2>Add Department</h2>
+        <div id="add-hall">
+            <div class="row bg-primary p-3 text-white">
+                <div class="col-12">
+                    <h2 class="text-center">Add Hall</h2>
                 </div>
             </div>
-            <!-- Add Course Form Section -->
-            <div class="form-container">
-                <form action="/adminSide/addDepartment" method="POST">
+
+            <!-- Add Hall Form Section -->
+            <div class="my-5 form-container">
+                <form action="/adminSide/addHall" method="POST">
                     <div class="mb-3">
-                        <label for="deptCode" class="form-label">Department Code</label>
-                        <input type="number" class="form-control" id="deptCode" name="deptCode" required>
+                        <label for="hallName" class="form-label">Hall Name</label>
+                        <input type="text" class="form-control" id="hallName" name="hallName" required>
                     </div>
                     <div class="mb-3">
-                        <label for="deptName" class="form-label">Department Name</label>
-                        <input type="text" class="form-control" id="deptName" name="deptName" required>
+                        <label for="provost" class="form-label">Provost Name</label>
+                        <select class="form-select" id="provost" name="provost" required>
+                            <option value="" disabled selected>Select Provost Name</option>
+                            <% AllDeptNameInfo.forEach(row => { %>
+                                <option value="<%= row.DEPT_NAME %>"><%= row.DEPT_NAME %></option>
+                            <% }); %>
+                            <!-- Department options will be dynamically populated by JavaScript -->
+                        </select>
                     </div>
-                    <!-- <div class="mb-3">
-                        <label for="deptHead" class="form-label">Department Head</label>
-                        <input type="text" class="form-control" id="deptHead" name="deptHead" required>
-                    </div> -->
-                    <input type="hidden" name="userId" value="<%= userId %>">
+                    
+
+                    <!-- Add more form elements as needed -->
                     <div class="small-box">
-                        <button type="submit" class="btn btn-outline-secondary ">Add Department</button>
+                        <button type="submit" class="btn btn-outline-secondary">Add Hall</button>
                     </div>
                 </form>
             </div>
         </div>
-
     </div>
+
+   
 </body>
 
 </html>

@@ -4,30 +4,29 @@ const bcrypt = require('bcrypt');
 
 const addDepartmentFunction = async (deptData) => {
     try {
-        const { deptId, deptName, deptHead, userId} = deptData;
+        const { deptCode, deptName, userId} = deptData;
 
-      
+
 
         const query = `
             INSERT INTO DEPARTMENT (
-            DEPARTMENT_ID, 
-            DEPARTMENT_NAME,
-            DEPARTMENT_HEAD
-            ) VALUES (?,?,?)
+            DEPT_CODE, 
+            DEPT_NAME
+            ) VALUES (?,?)
         `;
 
-       
+
 
         //const binds = { userId };
 
         const values = [
-            deptId, deptName,deptHead
+            deptCode, deptName
         ];
 
-       
+
 
         console.log("Query 1:", query, "Values 1:", values);
-        
+
         await pool.query(query, values, (error, results) => {
             if (error) {
                 console.error('Error executing query 1:', error);
@@ -36,11 +35,11 @@ const addDepartmentFunction = async (deptData) => {
             }
         });
 
-       
+
         console.log("department added successfully");
 
-        console.log(deptId);
-        return { success: true, message: 'Department added successfully', deptId};
+        console.log(deptCode);
+        return { success: true, message: 'Department added successfully', deptCode};
     } catch (error) {
         console.error('Error during student addition:', error);
         return { success: false, message: 'Internal Server Error', error: error.message };
