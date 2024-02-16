@@ -2,29 +2,11 @@
 const pool = require("../../config/dbConnection");
 const bcrypt = require('bcrypt');
 
-async function getSInfo() {
+async function getHallNameInfo() {
     try {
         const query = `
-        SELECT
-    s.STUDENT_NAME,
-    s.EMAIL,
-    s.ADDRESS,
-    s.PHONE_NO,
-    s.DATE_OF_BIRTH,
-    s.BANK_ACCOUNT,
-    s.NID,
-    s.LEVEL,
-    s.TERM,
-    d.DEPT_NAME,
-    t.TEACHER_NAME,
-    h.HALL_NAME
-FROM
-    STUDENT s
-LEFT JOIN DEPARTMENT d ON s.DEPT_ID = d.DEPT_ID
-LEFT JOIN TEACHER t ON s.ADVISOR_SERIAL_NO = t.TEACHER_SERIAL_NO
-LEFT JOIN HALL h ON s.HALL_ID = h.HALL_ID;
-
-
+            SELECT HALL_NAME
+            FROM HALL; 
         `;
          console.log(query);
         const results = await new Promise((resolve, reject) => {
@@ -39,17 +21,14 @@ LEFT JOIN HALL h ON s.HALL_ID = h.HALL_ID;
         });
         if (results.length > 0) {
            
-            return { success: true, message: 'Got student information', studentInfo: results };
+            return { success: true, message: 'Got hall name information', hallNameInfo: results };
         } else {
-            return { success: false, message: 'student not found' };
+            return { success: false, message: 'Department not found' };
         }
     } catch (error) {
-        console.error('Error during fetching student information:', error);
+        console.error('Error during fetching department name information:', error);
         return { success: false, message: 'Internal Server Error', error: error.message };
     }
 }
 
-module.exports = { getSInfo };
-
-
-
+module.exports = { getHallNameInfo };

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Student List - EDUCATION MOODLE (Edu-Mo)</title>
+    <title>Teacher List - EDUCATION MOODLE (Edu-Mo)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -104,45 +104,37 @@
         </div>
 
         <div class="container">
-            <h1 class="header-title">Student List</h1>
+            <h1 class="header-title">Teacher List</h1>
             <!-- Search bar -->
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search student...">
+                <input type="text" id="searchInput" placeholder="Search teacher...">
             </div>
         </div>
         <table class="table custom-table">
             <thead>
                 <tr>
-                    <th>Student Name</th>
+                    <th>Teacher Name</th>
                     <th>Phone No</th>
                     <th>Email</th>
-                    <th>Bank Account</th>
                     <th>Address</th>
-                    <th>Date Of Birth</th>
-                    <th>Hall Name</th>
-                    <th>NID</th>
+                    <th>Designation</th>
+                    <th>Salary</th>
                     <th>Department Name</th>
-                    <th>Level</th>
-                    <th>Term</th>
-                    <th>Advisor</th>
+                   
                 </tr>
             </thead>
-            <tbody id="studentTableBody">
+            <tbody id="teacherTableBody">
                 <!-- Loop through students and display -->
-                <% AllStudentInfo.forEach(student => { %>
+                <% AllTeacherInfo.forEach(teacher => { %>
                     <tr>
-                        <td><%= student.STUDENT_NAME %></td>
-                        <td><%= student.PHONE_NO %></td>
-                        <td><%= student.EMAIL %></td>
-                        <td><%= student.BANK_ACCOUNT %></td>
-                        <td><%= student.ADDRESS %></td>
-                        <td><%= student.DATE_OF_BIRTH %></td>
-                        <td><%= student.HALL_NAME %></td>
-                        <td><%= student.NID %></td>
-                        <td><%= student.DEPT_NAME %></td>
-                        <td><%= student.LEVEL %></td>
-                        <td><%= student.TERM %></td>
-                        <td><%= student.TEACHER_NAME %></td>
+                        <td><%= teacher.TEACHER_NAME %></td>
+                        <td><%= teacher.PHONE_NO %></td>
+                        <td><%= teacher.EMAIL %></td>
+                        <td><%= teacher.ADDRESS %></td>
+                        <td><%= teacher.DESIGNATION %></td>
+                        <td><%= teacher.SALARY %></td>
+                        <td><%= teacher.DEPT_NAME %></td>
+                        
                     </tr>
                 <% }); %>
             </tbody>
@@ -152,21 +144,21 @@
     <script>
         // Get the input field and table body
         var input = document.getElementById("searchInput");
-        var tableBody = document.getElementById("studentTableBody");
-
+        var tableBody = document.getElementById("teacherTableBody");
+    
         // Add event listener for keyup event
         input.addEventListener("keyup", function () {
             // Get the search query
             var filter = input.value.toUpperCase();
-
+    
             // Get all rows of the table
             var rows = tableBody.getElementsByTagName("tr");
-
+    
             // Loop through all table rows, and hide those who don't match the search query
             for (var i = 0; i < rows.length; i++) {
-                var studentName = rows[i].getElementsByTagName("td")[0];
-                if (studentName) {
-                    var txtValue = studentName.textContent || studentName.innerText;
+                var teacherName = rows[i].getElementsByTagName("td")[0]; // Change studentName to teacherName
+                if (teacherName) {
+                    var txtValue = teacherName.textContent || teacherName.innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
                         rows[i].style.display = "";
                     } else {
@@ -176,6 +168,7 @@
             }
         });
     </script>
+    
 </body>
 
 </html>

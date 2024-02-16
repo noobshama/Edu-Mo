@@ -72,14 +72,14 @@
                 <form action="/adminSide/addHall" method="POST">
                     <div class="mb-3">
                         <label for="hallName" class="form-label">Hall Name</label>
-                        <input type="text" class="form-control" id="hallName" name="hallName" required>
+                        <input type="text" class="form-control" id="hallName" name="hallName" required data-live-search="true">
                     </div>
                     <div class="mb-3">
-                        <label for="provost" class="form-label">Provost Name</label>
-                        <select class="form-select" id="provost" name="provost" required>
+                        <label for="teacherName" class="form-label">Provost Name</label>
+                        <select class="form-select" id="teacherName" name="teacherName" required>
                             <option value="" disabled selected>Select Provost Name</option>
-                            <% AllDeptNameInfo.forEach(row => { %>
-                                <option value="<%= row.DEPT_NAME %>"><%= row.DEPT_NAME %></option>
+                            <% AllTeacherNameInfo.forEach(row => { %>
+                                <option value="<%= row.TEACHER_NAME %>"><%= row.TEACHER_NAME %></option>
                             <% }); %>
                             <!-- Department options will be dynamically populated by JavaScript -->
                         </select>
@@ -87,6 +87,7 @@
                     
 
                     <!-- Add more form elements as needed -->
+                    <input type="hidden" name="userId" value="<%= userId %>">
                     <div class="small-box">
                         <button type="submit" class="btn btn-outline-secondary">Add Hall</button>
                     </div>

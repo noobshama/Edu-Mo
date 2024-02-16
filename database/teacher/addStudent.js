@@ -4,62 +4,113 @@ const bcrypt = require('bcrypt');
 
 const addStudentFunction = async (studentData) => {
     try {
-        const { studentId, studentName, hallId, deptId, session, isResident, semester, password, teacherId, userId} = studentData;
+        const {  studentId,studentName, hallName, deptName, teacherName, level,term, password, userId} = studentData;
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        const deptQuery = `
+            SELECT DEPT_ID FROM DEPARTMENT
+            WHERE DEPT_NAME = ?
+        `;
+        
+        const teacherQuery = `
+            SELECT TEACHER_SERIAL_NO FROM TEACHER
+            WHERE TEACHER_NAME = ?
+        `;
+        const hallQuery = `
+            SELECT HALL_ID FROM HALL
+            WHERE HALL_NAME = ?
+        `;
+
+        const results = await new Promise((resolve, reject) => {
+            pool.query(deptQuery,deptName, (error, results) => { // pass query directly, don't call the function
+                if (error) {
+                    console.error('Error executing query:', error);
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+        if (results.length <= 0) {
+            return { success: false, message: 'Department not found' };
+        }
+        const results1 = await new Promise((resolve, reject) => {
+            pool.query(teacherQuery,teacherName, (error, results) => { // pass query directly, don't call the function
+                if (error) {
+                    console.error('Error executing query:', error);
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+        if (results1.length <= 0) {
+            return { success: false, message: 'Teacher serial no not found' };
+        }
+        const results2 = await new Promise((resolve, reject) => {
+            pool.query(hallQuery,hallName, (error, results) => { // pass query directly, don't call the function
+                if (error) {
+                    console.error('Error executing query:', error);
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+        if (results2.length <= 0) {
+            return { success: false, message: 'hall id not found' };
+        }
+        
+        
+        const deptId = results[0].DEPT_ID;
+        console.log(deptId);
+        const teacherSerialno = results1[0].TEACHER_SERIAL_NO;
+        console.log(teacherSerialno);
+        const hallId = results2[0].HALL_ID;
+        console.log(teacherSerialno);
+        const userAddQuery = `
+            INSERT INTO USER (
+                USER_ID,
+                PASSWORD,
+                ROLE
+            ) VALUES (?,?,?)
+        `;
+        console.log('user add successfully');
+
+        const values = [
+            studentId, hashedPassword, 'student'
+        ];
+        await pool.query(userAddQuery, values, (error, results) => {
+            if (error) {
+                console.error('Error executing query:', error);
+                return { success: false, message: 'can not insert user' };
+            } else {
+                console.log('Query executed successfully');
+            }
+        });
+
         const query = `
             INSERT INTO STUDENT (
-            STUDENT_ID, 
             STUDENT_NAME,
             HALL_ID,
             DEPT_ID,
-            SESSION,
-            IS_RESIDENT,
-            SEMESTER,
-            TEACHER_ID
-            ) VALUES (?,?,?,?,?, IF(? = 'true', 1, 0),?,?)
+            TERM,
+            LEVEL,
+            ADVISOR_SERIAL_NO
+            ) VALUES (?,?,?,?,?,?)
         `;
 
-        const query2 = `
-            INSERT INTO USERS (
-            USER_ID, PASSWORD, ROLE
-            ) VALUES (?,?,?)
-        `;
+        
+        const info = await pool.query(query, [studentName,hallId, deptId,term,level,teacherSerialno]);
 
         const binds = { userId };
 
-        const values = [
-            studentId, studentName, hallId, deptId, session, isResident, semester, teacherId
-        ];
-
-        const values2 = [
-            studentId, hashedPassword, 'student'
-        ];
-
-        console.log("Query 1:", query, "Values 1:", values);
-        console.log("Query 2:", query2, "Values 2:", values2);
-
-        await pool.query(query, values, (error, results) => {
-            if (error) {
-                console.error('Error executing query 1:', error);
-            } else {
-                console.log('Query 1 executed successfully');
-            }
-        });
-
-        await pool.query(query2, values2, (error, results) => {
-            if (error) {
-                console.error('Error executing query 2:', error);
-            } else {
-                console.log('Query 2 executed successfully');
-            }
-        });
-
-        console.log("Student added successfully");
+        console.log("student added successfully");
 
         console.log(studentId);
-        return { success: true, message: 'Student added successfully', studentId};
+
+        return { success: true, message: 'student added successfully', studentId};
     } catch (error) {
         console.error('Error during student addition:', error);
         return { success: false, message: 'Internal Server Error', error: error.message };

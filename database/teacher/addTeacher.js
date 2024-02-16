@@ -4,58 +4,65 @@ const bcrypt = require('bcrypt');
 
 const addTeacherFunction = async (teacherData) => {
     try {
-        const { teacherId, teacherName, departmentId, designation, joiningDate, password, userId} = teacherData;
+        console.log("Received teacher data:", teacherData);
+        const { teacherId, teacherName, deptName, designation, password, userId} = teacherData;
 
         const hashedPassword = await bcrypt.hash(password, 10);
+        const trimmedDeptName = deptName.trim();
+
+        const deptQuery = `
+            SELECT DEPT_ID FROM DEPARTMENT
+            WHERE DEPT_NAME = ?
+        `;
+        const results = await new Promise((resolve, reject) => {
+            pool.query(deptQuery,deptName, (error, results) => { // pass query directly, don't call the function
+                if (error) {
+                    console.error('Error executing query:', error);
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+        if (results.length <= 0) {
+            return { success: false, message: 'Department not found' };
+        }
+        const deptId = results[0].DEPT_ID;
+        console.log(deptId);
+        const userAddQuery = `
+            INSERT INTO USER (
+                USER_ID,
+                PASSWORD,
+                ROLE
+            ) VALUES (?,?,?)
+        `;
+        const values = [
+            teacherId, hashedPassword, 'teacher'
+        ];
+        await pool.query(userAddQuery, values, (error, results) => {
+            if (error) {
+                console.error('Error executing query:', error);
+                return { success: false, message: 'can not insert user' };
+            } else {
+                console.log('Query executed successfully');
+            }
+        });
 
         const query = `
             INSERT INTO TEACHER (
-            TEACHER_ID, 
             TEACHER_NAME,
             DEPT_ID,
-            DESIGNATION,
-            JOINING_DATE
-            ) VALUES (?,?,?,?,?)
-        `;
-
-        const query2 = `
-            INSERT INTO USERS (
-            USER_ID, PASSWORD, ROLE
+            DESIGNATION
             ) VALUES (?,?,?)
         `;
+        const info = await pool.query(query, [teacherName, deptId, designation]);
 
         const binds = { userId };
-
-        const values = [
-            teacherId, teacherName, departmentId, designation, joiningDate
-        ];
-
-        const values2 = [
-            teacherId, hashedPassword, 'teacher'
-        ];
-
-        console.log("Query 1:", query, "Values 1:", values);
-        console.log("Query 2:", query2, "Values 2:", values2);
-
-        await pool.query(query, values, (error, results) => {
-            if (error) {
-                console.error('Error executing query 1:', error);
-            } else {
-                console.log('Query 1 executed successfully');
-            }
-        });
-
-        await pool.query(query2, values2, (error, results) => {
-            if (error) {
-                console.error('Error executing query 2:', error);
-            } else {
-                console.log('Query 2 executed successfully');
-            }
-        });
 
         console.log("Teacher added successfully");
 
         console.log(teacherId);
+
         return { success: true, message: 'Teacher added successfully', teacherId};
     } catch (error) {
         console.error('Error during teacher addition:', error);

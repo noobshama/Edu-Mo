@@ -16,12 +16,16 @@ const {getInfo} = require("../database/teacher/getTeacherInfo");
 const {getDepartmentInfo} = require("../database/teacher/getAllDeptInfo");
 const {getCourseInfo} = require("../database/teacher/getAllCourseInfo");
 const {getSInfo} = require("../database/teacher/getAllStudentInfo");
+const {getTInfo} = require("../database/teacher/getAllTeacherInfo");
 const { logInInfo } = require("../database/userLogInInfo");
 const { addStudentFunction } = require("../database/teacher/addStudent");
 const { addCourseFunction } = require("../database/teacher/addCourse");
 const { addDepartmentFunction } = require("../database/teacher/addDepartment");
 const { addTeacherFunction } = require("../database/teacher/addTeacher");
+const { addHallFunction } = require("../database/teacher/addHall");
 const { getDeptNameInfo } = require("../database/teacher/getDeptNameInfo");
+const { getHallNameInfo } = require("../database/teacher/getHallNameInfo");
+const { getTeacherNameInfo } = require("../database/teacher/getTeacherNameInfo");
 const app = express();
 
 app.use(express.json());
@@ -65,16 +69,16 @@ app.post('/login', async (req, res) =>{
     try {
         console.log('here');
         const result = await logInInfo(req.body);
-        console.log('server page',result.username, ' ', result.role);
+        console.log('server page',result.userId, ' ', result.role);
         if (result.success) {
             if(result.role === 'student') {
-                res.redirect(`/studentSide/studentHome?userId=${result.username}`);
+                res.redirect(`/studentSide/studentHome?userId=${result.userId}`);
             }
             else if(result.role === 'teacher') {
-                res.redirect(`/teacherSide/teacherHome?userId=${result.username}`);
+                res.redirect(`/teacherSide/teacherHome?userId=${result.userId}`);
             }
             else if (result.role === 'admin'){
-                res.redirect(`/adminSide/adminHome?userId=${result.username}`);
+                res.redirect(`/adminSide/adminHome?userId=${result.userId}`);
             }
             //res.redirect(`/adminSide/adminHome?userId=${result.userId}`);
         } else {
@@ -212,7 +216,24 @@ app.get('/adminSide/showStudentInfo', async (req, res) => {
 });
 
 
+app.get('/adminSide/showTeacherInfo', async (req, res) => {
+    try {
+        const userId = req.query.userId;
+        const teacherData = await getTInfo();
+        console.log(typeof teacherData, teacherData);
 
+        // Check if departmentData contains the deptInfo array
+        if (teacherData && teacherData.teacherInfo) {
+            res.render("adminSide/showTeacherInfo", { AllTeacherInfo: teacherData.teacherInfo, userId: userId });
+        } else {
+            // Handle the case where departmentData.deptInfo is not available
+            res.status(404).send("teacher information not available");
+        }
+    } catch (error) {
+        console.error('Error during /adminSide/showTeacherInfo:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
 
 
 app.get('/adminSide/addDepartment', (req, res) => {
@@ -222,18 +243,38 @@ app.get('/adminSide/addDepartment', (req, res) => {
 
 });
 
-app.get('/adminSide/addStudent', (req, res) => {
+app.get('/adminSide/addStudent',async (req, res) => {
+    try {
     const userId = req.query.userId;
-    res.render('adminSide/addStudent', { userId });
+    const deptNameData = await getDeptNameInfo();
+    const teacherNameData = await getTeacherNameInfo();
+    const hallNameData =await getHallNameInfo();
+    console.log(typeof deptNameData, deptNameData);
+    console.log(typeof teacherNameData, teacherNameData);
+    console.log(typeof hallNameData, hallNameData);
+    if (deptNameData && deptNameData.deptNameInfo && teacherNameData && teacherNameData.teacherNameInfo && hallNameData && hallNameData.hallNameInfo) {
+        res.render("adminSide/addStudent", { AllDeptNameInfo: deptNameData.deptNameInfo,AllTeacherNameInfo:teacherNameData.teacherNameInfo,AllHallNameInfo:hallNameData.hallNameInfo, userId: userId });
+    } else {
+        // Handle the case where departmentData.deptInfo is not available
+        res.status(404).send("student information not available");
+    }
+} catch (error) {
+    console.error('Error during /adminSide/addStudent:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+}
 });
+
+
 app.get('/adminSide/addCourse', (req, res) => {
     const userId = req.query.userId;
+   
     res.render('adminSide/addCourse', { userId });
 });
 app.get('/adminSide/addTeacher', async(req, res) => {
     try {
         const userId = req.query.userId;
         const deptNameData = await getDeptNameInfo();
+        
         console.log(typeof deptNameData, deptNameData);
 
         // Check if departmentData contains the deptInfo array
@@ -251,10 +292,48 @@ app.get('/adminSide/addTeacher', async(req, res) => {
     // console.log(userId);
     // res.render('adminSide/addTeacher', { userId });
 });
+app.get('/adminSide/addHall', async(req, res) => {
+    try {
+        const userId = req.query.userId;
+        const teacherNameData = await getTeacherNameInfo();
+        console.log(typeof teacherNameData, teacherNameData);
 
+        // Check if departmentData contains the deptInfo array
+        if (teacherNameData && teacherNameData.teacherNameInfo) {
+            res.render("adminSide/addHall", { AllTeacherNameInfo: teacherNameData.teacherNameInfo, userId: userId });
+        } else {
+            // Handle the case where departmentData.deptInfo is not available
+            res.status(404).send("Teacher information not available");
+        }
+    } catch (error) {
+        console.error('Error during /adminSide/addHall:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+    // const userId = req.query.userId;
+    // console.log(userId);
+    // res.render('adminSide/addTeacher', { userId });
+});
+app.post('/adminSide/addHall', async (req, res) => {
+    try {
+        console.log('add Hall');
+        console.log('Received form data:', req.body);
+        const result = await addHallFunction(req.body);
+        console.log(result.hallId);
+        if (result.success) {
+            console.log('adminSide/adminHome: ', req.body.userId);
+            res.redirect(`/adminSide/adminHome?userId=${req.body.userId}`);    
+        } else {
+            res.status(500).json(result);
+        }
+    } catch (error) {
+        console.error('Error during registration:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
 app.post('/adminSide/addStudent', async (req, res) => {
     try {
         console.log('add student');
+        console.log('Received form data:', req.body);
         const result = await addStudentFunction(req.body);
         console.log(result.studentId);
         if (result.success) {

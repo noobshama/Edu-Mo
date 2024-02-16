@@ -76,16 +76,19 @@
                                 <div class="collapse" id="addOptions">
                                     <ul class="navbar-nav flex-column ms-3">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/addTeacher?userId=userIdPlaceholder">Add Teacher</a> 
+                                            <a class="nav-link" href="/adminSide/addTeacher?userId=<%= userId %>">Add Teacher</a> 
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/addStudent?userId=userIdPlaceholder">Add Student</a> 
+                                            <a class="nav-link" href="/adminSide/addStudent?userId=<%= userId %>">Add Student</a> 
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/addDepartment?userId=userIdPlaceholder">Add Department</a>
+                                            <a class="nav-link" href="/adminSide/addDepartment?userId=<%= userId %>">Add Department</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/addCourse?userId=userIdPlaceholder">Add Course</a>
+                                            <a class="nav-link" href="/adminSide/addCourse?userId=<%= userId %>">Add Course</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/addHall?userId=<%= userId %>">Add Hall</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -97,16 +100,16 @@
                                 <div class="collapse" id="showOptions">
                                     <ul class="navbar-nav flex-column ms-3">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showDepartment?userId=userIdPlaceholder">Show Department Information</a>
+                                            <a class="nav-link" href="/adminSide/showDepartment?userId=<%= userId %>">Show Department Information</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showCourse?userId=userIdPlaceholder">Show Course Information</a>
+                                            <a class="nav-link" href="/adminSide/showCourse?userId=<%= userId %>">Show Course Information</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showStudentInfo?userId=userIdPlaceholder">Show Student Information</a>
+                                            <a class="nav-link" href="/adminSide/showStudentInfo?userId=<%= userId %>">Show Student Information</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showTeacherInfo?userId=userIdPlaceholder">Show Teacher Information</a>
+                                            <a class="nav-link" href="/adminSide/showTeacherInfo?userId=<%= userId %>">Show Teacher Information</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -117,13 +120,13 @@
                                 <div class="collapse" id="checkOptions">
                                     <ul class="navbar-nav flex-column ms-3">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showDepartment?userId=userIdPlaceholder">Check Department</a>
+                                            <a class="nav-link" href="/adminSide/showDepartment?userId=<%= userId %>">Check Department</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showCourse?userId=userIdPlaceholder">Check Max Enrollment</a>
+                                            <a class="nav-link" href="/adminSide/showCourse?userId=<%= userId %>">Check Max Enrollment</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showStudentInfo?userId=userIdPlaceholder">Check Valid Teaches Entry</a>
+                                            <a class="nav-link" href="/adminSide/showStudentInfo?userId=<%= userId %>">Check Valid Teaches Entry</a>
                                         </li>
                                         
                                     </ul>

@@ -69,17 +69,20 @@
             <!-- Add Student Form Section -->
             <div class="my-5 form-container">
             <form action="/adminSide/addStudent" method="POST">
-               
+                <div class="mb-3">
+                    <label for="studentId" class="form-label">Student ID</label>
+                    <input type="text" class="form-control" id="studentId" name="studentId" required>
+                </div>
                 <div class="mb-3">
                     <label for="studentName" class="form-label">Student Name</label>
                     <input type="text" class="form-control" id="studentName" name="studentName" required>
                 </div>
                 <div class="mb-3">
-                    <label for="hall" class="form-label">Hall Name</label>
-                    <select class="form-select" id="hall" name="hall" required>
+                    <label for="hallName" class="form-label">Hall Name</label>
+                    <select class="form-select" id="hallName" name="hallName" required>
                         <option value="" disabled selected>Select Hall Name</option>
-                        <% AllDeptNameInfo.forEach(row => { %>
-                            <option value="<%= row.DEPT_NAME %>"><%= row.DEPT_NAME %></option>
+                        <% AllHallNameInfo.forEach(row => { %>
+                            <option value="<%= row.HALL_NAME %>"><%= row.HALL_NAME %></option>
                         <% }); %>
                         <!-- Department options will be dynamically populated by JavaScript -->
                     </select>
@@ -95,11 +98,11 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="advisor" class="form-label">Advisor Name</label>
-                    <select class="form-select" id="advisor" name="advisor" required>
+                    <label for="teacherName" class="form-label">Advisor Name</label>
+                    <select class="form-select" id="teacherName" name="teacherName" required>
                         <option value="" disabled selected>Select Advisor Name</option>
-                        <% AllDeptNameInfo.forEach(row => { %>
-                            <option value="<%= row.DEPT_NAME %>"><%= row.DEPT_NAME %></option>
+                        <% AllTeacherNameInfo.forEach(row => { %>
+                            <option value="<%= row.TEACHER_NAME %>"><%= row.TEACHER_NAME %></option>
                         <% }); %>
                         <!-- Department options will be dynamically populated by JavaScript -->
                     </select>
