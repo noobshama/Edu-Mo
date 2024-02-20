@@ -2,24 +2,18 @@
 const pool = require("../../config/dbConnection");
 const bcrypt = require('bcrypt');
 
-async function getCourseInfo() {
+async function getCourseTitleInfo(deptName) {
     try {
         const query = `
-        SELECT
-        c.COURSE_CODE,
-        c.TITLE,
-        c.CREDIT,
-        c.LEVEL,
-        c.TERM,
-        d.DEPT_NAME
-    FROM
-        COURSE c
-    JOIN
-       DEPARTMENT d ON c.DEPT_ID = d.DEPT_ID;
+            SELECT C.TITLE
+            FROM COURSE C
+            JOIN DEPARTMENT D
+            ON C.DEPT_ID = D.DEPT_ID
+            WHERE D.DEPT_NAME = ? 
         `;
          console.log(query);
         const results = await new Promise((resolve, reject) => {
-            pool.query(query, (error, results) => { // pass query directly, don't call the function
+            pool.query(query, deptName, (error, results) => { // pass query directly, don't call the function
                 if (error) {
                     console.error('Error executing query:', error);
                     reject(error);
@@ -30,17 +24,14 @@ async function getCourseInfo() {
         });
         if (results.length > 0) {
            
-            return { success: true, message: 'Got course information', courseInfo: results };
+            return { success: true, message: 'Got Course Title information', courseTitleInfo: results };
         } else {
-            return { success: false, message: 'course not found' };
+            return { success: false, message: 'Course not found', courseTitleInfo: [] };
         }
     } catch (error) {
-        console.error('Error during fetching department information:', error);
+        console.error('Error during fetching department name information:', error);
         return { success: false, message: 'Internal Server Error', error: error.message };
     }
 }
 
-module.exports = { getCourseInfo };
-
-
-
+module.exports = { getCourseTitleInfo };

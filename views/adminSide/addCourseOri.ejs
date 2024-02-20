@@ -92,17 +92,16 @@
                 <div class="mb-3">
                     <label for="prerequisites" class="form-label">Pre-requisite Course Name</label>
                     <select class="selectpicker form-select" id="prerequisites" name="prerequisites[]" multiple>
-                        <option value="course1">Course 1</option>
+                        <!-- <option value="course1">Course 1</option>
                         <option value="course2">Course 2</option>
-                        <option value="course3">Course 3</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="deptName" class="form-label">Department Name</label>
-                    <select class="selectpicker form-select" id="deptName" name="deptName" >
-                        <option value="" disabled selected>Select Department</option>
-                        <option value="dept1">Department 1</option>
-                        <!-- Additional department options can be dynamically populated here -->
+                        <option value="course3">Course 3</option> -->
+                        <% if (AllCourseTitleInfo && AllCourseTitleInfo.length > 0) { %>
+                            <% AllCourseTitleInfo.forEach(row => { %>
+                                <option value="<%= row.TITLE %>"><%= row.TITLE %></option>
+                            <% }); %>
+                        <% } else { %>
+                            <option value="" disabled>No courses found</option>
+                        <% } %>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -134,6 +133,7 @@
                     </select>
                 </div>
                 <input type="hidden" name="userId" value="<%= userId %>">
+                <input type="hidden" name="deptName" value="<%= deptName %>">
                 <button type="submit" class="btn btn-outline-secondary">Add Course</button>
             </form>
         </div>

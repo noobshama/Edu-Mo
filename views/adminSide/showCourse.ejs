@@ -10,7 +10,9 @@
 
     <style>
         body {
-            background-color: #f8f9fa;
+            font-family: 'Nunito', 'sans-serif';
+            background-color: #f4f7fc;
+            color: #09090a;
         }
 
         .header-title {
@@ -18,7 +20,6 @@
             margin-bottom: 30px;
             text-align: center;
             font-size: 2rem;
-            font-weight: bold;
         }
 
         .custom-table {
@@ -49,40 +50,123 @@
             color: #ffffff;
         }
 
+        /* Custom grid styles */
+        .custom-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+
+        .custom-col {
+            padding-right: 15px;
+            padding-left: 15px;
+            flex-basis: 0;
+            flex-grow: 1;
+            max-width: 100%;
+        }
+
+        /* Search bar styles */
+        .search-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .search-container input[type=text] {
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .search-container button {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row bg-primary p-5 text-white">
             <div class="col-12">
-                <h1>Edu-Mo</h1>
+                <h1 class="text-center">Edu-Mo</h1>
             </div>
         </div>
 
-        <h1 class="header-title">Course List</h1>
-
+        <div class="container">
+            <h1 class="header-title">Course List</h1>
+            <!-- Search bar -->
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search course name...">
+            </div>
+        </div>
         <table class="table custom-table">
             <thead>
                 <tr>
                     <th>Course Id</th>
                     <th>Course Name</th>
                     <th>Credit Hour</th>
+                    <th>Level</th>
+                    <th>Term</th>
                     <th>Department Name</th>
                 </tr>
+
             </thead>
-            <tbody>
+            <tbody id="courseTableBody">
+                <!-- Loop through students and display -->
                 <% AllCourseInfo.forEach(course => { %>
                     <tr>
-                        <td><%= course.COURSE_ID %></td>
-                        <td><%= course.COURSE_NAME %></td>
-                        <td><%= course.CREDIT_HOUR %></td>
-                        <td><%= course.DEPARTMENT_NAME %></td>
+                        <td><%= course.COURSE_CODE %></td>
+                        <td><%= course.TITLE %></td>
+                        <td><%= course.CREDIT %></td>
+                        <td><%= course.LEVEL %></td>
+                        <td><%= course.TERM %></td>
+                        <td><%= course.DEPT_NAME %></td>
                     </tr>
-                <% }); %>
+                <% }); %>
+
             </tbody>
         </table>
     </div>
+
+    <script>
+        // Get the input field and table body
+        var input = document.getElementById("searchInput");
+        var tableBody = document.getElementById("courseTableBody");
+    
+        // Add event listener for keyup event
+        input.addEventListener("keyup", function () {
+            // Get the search query
+            var filter = input.value.toUpperCase();
+    
+            // Get all rows of the table
+            var rows = tableBody.getElementsByTagName("tr");
+    
+            // Loop through all table rows, and hide those who don't match the search query
+            for (var i = 0; i < rows.length; i++) {
+                var courseNameCell = rows[i].getElementsByTagName("td")[1]; // Get the cell containing the course name
+                if (courseNameCell) {
+                    var courseName = courseNameCell.textContent || courseNameCell.innerText; // Get the text content of the cell
+                    if (courseName.toUpperCase().indexOf(filter) > -1) {
+                        rows[i].style.display = ""; // Show the row if it matches the search query
+                    } else {
+                        rows[i].style.display = "none"; // Hide the row if it doesn't match
+                    }
+                }
+            }
+        });
+    </script>
+    
 </body>
 
 </html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Course List - EDUCATION MOODLE (Edu-Mo)</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Nunito', 'sans-serif';
+            background-color: #f4f7fc;
+            color: #09090a;
+        }
+
+        .header-title {
+            margin-top: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .custom-table {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .custom-table thead {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .custom-table tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .navbar {
+            background-color: #007bff;
+        }
+
+        .navbar-brand,
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+        .bg-primary {
+            background-color: #007bff !important;
+            color: #ffffff;
+        }
+
+        /* Custom Checkbox styles */
+        .custom-checkbox {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            user-select: none;
+        }
+
+        /* Hide the browser's default checkbox */
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        /* Create a custom checkbox */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .custom-checkbox:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: #007bff;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row bg-primary p-3 text-white">
+            <div class="col-12">
+                <h1 class="text-center">Edu-Mo</h1>
+            </div>
+        </div>
+
+        <div id="add-teacher" >
+            <div class="row bg-primary p-3 text-white">
+                <div class="col-12">
+                    <h2 class="text-center">Offer Course</h2>
+                </div>
+            </div>
+        <form id="course-selection-form" action="/adminSide/offerCourseSend" method="POST">
+            <table class="table custom-table">
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>TITLE</th>
+                        <th>Credit </th>
+                        <th>Level</th>
+                        <th>Term</th>
+                        <th>Department Name</th>
+                        <th>Select</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% AllCourseInfo.forEach(course => { %>
+                        <tr>
+                            <td><%= course.COURSE_CODE %></td>
+                            <td><%= course.TITLE %></td>
+                            <td><%= course.CREDIT %></td>
+                            <td><%= course.LEVEL %></td>
+                            <td><%= course.TERM %></td>
+                            <td><%= course.DEPT_NAME %></td>
+                            <td>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="selectedCourses[]" value="<%= course.COURSE_ID %>">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+
+</html>

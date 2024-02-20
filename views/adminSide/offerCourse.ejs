@@ -62,63 +62,50 @@
                     <h2 class="text-center">Offer Course</h2>
                 </div>
             </div>
-        <div id="offer-course" class="mt-4">
-            <div class="my-5 form-container">
-                <form id="offer-course-form" action="/adminSide/offerCourse" method="POST">
-                    <div class="mb-3">
-                        <label for="semester" class="form-label">Semester</label>
-                        <select class="form-select" id="semester" name="semester" required onchange="checkSelection()">
-                            <option value="">Select Semester</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <!-- Options will be dynamically loaded or hard-coded here -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="department" class="form-label">Department</label>
-                        <select class="form-select" id="department" name="department" required onchange="checkSelection()">
-                            <option value="">Select Department</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <!-- Options will be dynamically loaded or hard-coded here -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="level" class="form-label">Level</label>
-                        <select class="form-select" id="level" name="level" required onchange="checkSelection()">
-                            <option value="">Select Level</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="term" class="form-label">Term</label>
-                        <select class="form-select" id="term" name="term" required onchange="checkSelection()">
-                            <option value="">Select Term</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
-                    </div>
-                </form>
-                
-                <div id="course-table" class="hidden">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Course Name</th>
-                                <th scope="col">Offer</th>
-                            </tr>
-                        </thead>
-                        <tbody id="course-list">
-                            <!-- Courses will be populated here -->
-                        </tbody>
-                    </table>
+            <div id="offer-course" class="mt-4">
+                <div class="my-5 form-container">
+                    <form id="offer-course-form" action="/adminSide/offerCourse" method="POST">
+                        <div class="mb-3">
+                            <label for="semester" class="form-label">Semester</label>
+                            <select class="form-select" id="semester" name="semester" required onchange="checkSelection()">
+                                <option value="">Select Semester</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <!-- Options will be dynamically loaded or hard-coded here -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="department" class="form-label">Department</label>
+                            <select class="form-select" id="department" name="department" required onchange="checkSelection()">
+                                <option value="">Select Department</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <!-- Options will be dynamically loaded or hard-coded here -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="level" class="form-label">Level</label>
+                            <select class="form-select" id="level" name="level" required onchange="checkSelection()">
+                                <option value="">Select Level</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="term" class="form-label">Term</label>
+                            <select class="form-select" id="term" name="term" required onchange="checkSelection()">
+                                <option value="">Select Term</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                    </form>
+                    
+                    <!-- Next button to proceed -->
+                    <button id="next-btn" class="btn btn-outline-secondary hidden" onclick="proceedToNext()">Next</button>
                 </div>
-                <!-- Submit button for courses -->
-                <button id="submit-courses-btn" class="btn btn-outline-secondary hidden" onclick="submitCourses()">Submit</button>
             </div>
         </div>
     </div>
@@ -131,43 +118,16 @@
             const term = document.getElementById('term').value;
 
             if (semester !== "" && department !== "" && level !== "" && term !== "") {
-                showCourses();
+                document.getElementById('next-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('next-btn').classList.add('hidden');
             }
         }
 
-        function showCourses() {
-            // Assuming courses data will be fetched based on the selections.
-            // This is a static example; replace with dynamic data fetching as needed.
-            const courses = [
-                { id: 1, name: 'Introduction to Computer Science' },
-                { id: 2, name: 'Advanced Database Systems' },
-                { id: 3, name: 'Machine Learning 101' },
-            ];
-
-            const courseList = document.getElementById('course-list');
-            courseList.innerHTML = ''; // Clear existing courses
-
-            courses.forEach((course, index) => {
-                const row = `
-                    <tr>
-                        <th scope="row">${index + 1}</th>
-                        <td>${course.name}</td>
-                        <td><input type="checkbox" class="custom-checkbox"></td>
-                    </tr>
-                `;
-                courseList.innerHTML += row;
-            });
-
-            document.getElementById('course-table').classList.remove('hidden');
-            document.getElementById('submit-courses-btn').classList.remove('hidden');
-        }
-
-        function submitCourses() {
-            // Add your code here to handle the submission of selected courses
-            console.log('Courses submitted!');
+        function proceedToNext() {
+            // You can add code here to proceed to the next step
+            console.log('Proceeding to next step...');
         }
     </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="en">
