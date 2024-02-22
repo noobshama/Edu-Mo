@@ -470,6 +470,37 @@ app.get('/adminSide/offerCourse', (req, res) => {
     console.log('user Id at student home page: ', userId);
     res.render('adminSide/offerCourse', { userId });
 });
+app.get('/studentSide/enrollment', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at student home page: ', userId);
+    res.render('studentSide/enrollment', { userId });
+});
+app.get('/studentSide/addCourse', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at student home page: ', userId);
+    res.render('studentSide/addCourse', { userId });
+});
+app.get('/studentSide/dropCourse', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at student home page: ', userId);
+    res.render('studentSide/dropCourse', { userId });
+});
+app.get('/studentSide/Approval', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at student home page: ', userId);
+    res.render('studentSide/Approval', { userId });
+});
+app.get('/studentSide/selectLevelTerm', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at student home page: ', userId);
+    res.render('studentSide/selectLevelTerm', { userId });
+});
+app.get('/studentSide/result', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at student home page: ', userId);
+    res.render('studentSide/result', { userId });
+});
+
 // app.post('/adminSide/offerCourse', async (req, res) => {
 //     try {
 //         const result = await registerAdmin(req.body);

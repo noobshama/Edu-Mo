@@ -22,21 +22,15 @@
         .navbar-light .navbar-nav .nav-link:hover {
             color: #a1560f;
              /* Darker color on hover */
-            
         }
         .navbar-light .navbar-nav .nav-link {
                 font-size: 21px;
             }
-
-        
-
-        
         .navbar-light .navbar-nav .nav-item {
             background-color: white; /* White background for nav item */
             border-radius: 0.25rem;
-            margin-bottom: 10px ;
+            margin-bottom: 10px;
             transition: background-color 0.3s;
-            
         }
         .navbar-light .navbar-nav .nav-item:hover {
             background-color: #f8f9fa; /* Lighter color on hover */
@@ -44,11 +38,10 @@
         .nav-link-collapse {
             background-color: transparent; /* No background color */
             border: none;
-            
         }
         .collapse > ul > .nav-item {
             padding-left: 20px; /* Indent sub-menu items */
-            text-align:left;
+            text-align: left;
         }
         .active {
             background-color: #b8daff !important; /* Active item color */
@@ -62,18 +55,57 @@
             position: relative; /* Changed from fixed to relative */
             width: 100%;
         }
+        /* Custom styling for the selection form */
+        .selection-form {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+        .selection-form label {
+            font-weight: bold;
+        }
+        .selection-form select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .selection-form select:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        .selection-form .btn-primary {
+            width: 100%;
+            margin-top: 15px;
+        }
+        /* Custom styling for the alternate selection bar */
+        .alternate-selection-bar {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            display: none; /* Initially hidden */
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Header Section -->
         <div class="row bg-primary p-5 text-white">
             <div class="col-12">
                 <h1>Edu-Mo</h1>
             </div>
         </div>
 
+        <!-- Main Content Section -->
         <div class="row">
-            <div class="col-12">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
                 <nav class="navbar navbar-expand-sm navbar-light">
                     <div class="container-fluid">
                        
@@ -86,7 +118,6 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="/studentSide/personalInfo?userId=<%= userId %>">Personal Information</a> 
                                         </li>
-                                        
                                     </ul>
                                 </div>
                             </li>
@@ -108,11 +139,11 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="/studentSide/Approval?userId=<%= userId %>">Approval</a>
                                         </li>
-
                                     </ul>
                                 </div>
                             </li>
                             <!-- Other nav items -->
+                           
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="collapse" href="#resultOptions">Result</a>
                                 <div class="collapse" id="resultOptions">
@@ -120,18 +151,49 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="/studentSide/selectLevelTerm?userId=<%= userId %>">Result</a>
                                         </li>
-                                      
-
                                     </ul>
                                 </div>
                             </li>
-                           
                         </ul>
                     </div>
                 </nav>
             </div>
-            <input type="hidden" name="userId" value="<%= userId %>">
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- Alternate Selection Bar (Initially hidden) -->
+                <div class="alternate-selection-bar">
+                    <p>Please select both a level and a term.</p>
+                </div>
+                <!-- Selection Form -->
+                <div class="selection-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="level">Level:</label>
+                            <select class="form-control" id="level">
+                                <option value="">Select Level</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="term">Term:</label>
+                            <select class="form-control" id="term">
+                                <option value="">Select Term</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div> 
+                        <button id="goToNextPageBtn" class="btn btn-primary">Show</button>
+                    </form>
+                </div>
+            </div>
         </div>
+        
+        <!-- Footer Section -->
         <div class="row">
             <div class="col-12 footer">
                 <hr>
@@ -139,5 +201,32 @@
             </div>
         </div>
     </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('goToNextPageBtn').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        var level = document.getElementById('level').value;
+        var term = document.getElementById('term').value;
+        var alternateSelectionBar = document.querySelector('.alternate-selection-bar');
+
+        if (level !== "" && term !== "") {
+            // If both level and term are selected, redirect to the result page
+            window.location.href = '/studentSide/result?userId=<%= userId %>';
+        } else {
+            // If either level or term is not selected, show the alternate selection bar
+            alternateSelectionBar.style.display = 'block';
+            // Hide the alternate selection bar after 5 seconds (optional)
+            setTimeout(function() {
+                alternateSelectionBar.style.display = 'none';
+            }, 5000);
+        }
+    });
+});
+
+</script>
+   
+    
+    
 </body>
 </html>

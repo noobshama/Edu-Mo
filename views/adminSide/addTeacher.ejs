@@ -16,24 +16,36 @@
         }
 
         .navbar {
-            background-color: #007bff;
+            background-color: whitesmoke;
         }
 
         .navbar-brand,
         .navbar-nav .nav-link {
-            color: #ffffff !important;
+            color: rgb(230, 115, 8); /* Black color for nav link */
+            text-align: left;
         }
+        .navbar-light .navbar-nav .nav-link {
+            color: rgb(230, 115, 8); /* Black color for nav link */
+            text-align: left;
+        }
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #2319d9;
+             /* Darker color on hover */
+            
+        }
+        .navbar-nav .nav-link {
+        font-size: 21px;
+    }
 
         .bg-primary {
             background-color: #007bff !important;
-            color: #ffffff;
+           
         }
 
         .form-container {
             background-color: #ffffff;
             padding: 20px;
             border-radius: 10px;
-          
         }
 
         .form-control {
@@ -54,8 +66,6 @@
 </head>
 
 <body>
-    
-
     <div class="container">
         <div class="row bg-primary p-3 text-white">
             <div class="col-12">
@@ -63,62 +73,140 @@
             </div>
         </div>
 
-        <div id="add-teacher" >
-            <div class="row bg-primary p-3 text-white">
-                <div class="col-12">
-                    <h2 class="text-center">Add Teacher</h2>
-                </div>
+        <div class="row mt-3">
+            <div class="col-3">
+                <!-- Sidebar -->
+                <nav class="navbar navbar-expand-sm navbar-light">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav flex-column">
+                            <!-- Add Section with corrected IDs -->
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#addOptions">Add</a>
+                                <div class="collapse" id="addOptions">
+                                    <ul class="navbar-nav flex-column ms-3">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/addTeacher?userId=<%= userId %>">Add Teacher</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/addStudent?userId=<%= userId %>">Add Student</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/addDepartment?userId=<%= userId %>">Add Department</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/addCourse?userId=<%= userId %>">Add Course</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/addHall?userId=<%= userId %>">Add Hall</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <!-- Show Information Section with unique ID -->
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#showOptions">Show Information</a>
+                                <div class="collapse" id="showOptions">
+                                    <ul class="navbar-nav flex-column ms-3">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showDepartment?userId=<%= userId %>">Show Department Information</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showCourse?userId=<%= userId %>">Show Course Information</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showStudentInfo?userId=<%= userId %>">Show Student Information</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showTeacherInfo?userId=<%= userId %>">Show Teacher Information</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Other nav items -->
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#checkOptions">Check Details</a>
+                                <div class="collapse" id="checkOptions">
+                                    <ul class="navbar-nav flex-column ms-3">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showDepartment?userId=<%= userId %>">Check Department</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showCourse?userId=<%= userId %>">Check Max Enrollment</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showStudentInfo?userId=<%= userId %>">Check Valid Teaches Entry</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/adminSide/offerCourse?userId=<%= userId %>">Course Offer</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
             </div>
+            <div class="col-9">
+                <!-- Main content -->
+                <div id="add-teacher">
+                    <!-- Add Teacher Form Section -->
+                    <div class="row bg-primary p-3 text-white">
+                        <div class="col-12">
+                            <h2 class="text-center">Add Teacher</h2>
+                        </div>
+                    </div>
+                    <div class="my-5 form-container">
+                        <form action="/adminSide/addTeacher" method="POST">
+                            <div class="mb-3">
+                                <label for="teacherId" class="form-label">Teacher ID</label>
+                                <input type="text" class="form-control" id="teacherId" name="teacherId" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="teacherName" class="form-label">Teacher Name</label>
+                                <input type="text" class="form-control" id="teacherName" name="teacherName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deptName" class="form-label">Department Name</label>
+                                <select class="form-select" id="deptName" name="deptName" required>
+                                    <option value="" disabled selected>Select Department</option>
+                                    <% AllDeptNameInfo.forEach(row => { %>
+                                        <option value="<%= row.DEPT_NAME %>"><%= row.DEPT_NAME %></option>
+                                    <% }); %>
+                                    <!-- Department options will be dynamically populated by JavaScript -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="designation" class="form-label">Designation</label>
+                                <select class="form-select" id="designation" name="designation" required>
+                                    <option value="" disabled selected>Select Designation</option>
+                                    <!-- Designation options will be dynamically populated by JavaScript -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
 
-            <!-- Add Teacher Form Section -->
-            <div class="my-5 form-container">
-                <form action="/adminSide/addTeacher" method="POST">
-                    <div class="mb-3">
-                        <label for="teacherId" class="form-label">Teacher ID</label>
-                        <input type="text" class="form-control" id="teacherId" name="teacherId" required>
+                            <!-- Add more form elements as needed -->
+                            <input type="hidden" name="userId" value="<%= userId %>">
+                            <div class="small-box">
+                                <button type="submit" class="btn btn-outline-secondary ">Add Teacher</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="teacherName" class="form-label">Teacher Name</label>
-                        <input type="text" class="form-control" id="teacherName" name="teacherName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="deptName" class="form-label">Department Name</label>
-                        <select class="form-select" id="deptName" name="deptName" required>
-                            <option value="" disabled selected>Select Department</option>
-                            <% AllDeptNameInfo.forEach(row => { %>
-                                <option value="<%= row.DEPT_NAME %>"><%= row.DEPT_NAME %></option>
-                            <% }); %>
-                            <!-- Department options will be dynamically populated by JavaScript -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="designation" class="form-label">Designation</label>
-                        <select class="form-select" id="designation" name="designation" required>
-                            <option value="" disabled selected>Select Designation</option>
-                            <!-- Designation options will be dynamically populated by JavaScript -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-
-                    <!-- Add more form elements as needed -->
-                    <input type="hidden" name="userId" value="<%= userId %>">
-                    <div class="small-box">
-                        <button type="submit" class="btn btn-outline-secondary ">Add Teacher</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         // Function to populate department options
-     
+
 
         // Call functions to populate options when the DOM is loaded
-       
+
 
         // Function to populate designation options
         function populateDesignations() {
@@ -134,7 +222,7 @@
 
         // Call functions to populate options when the DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-           // populateDepartments();
+            // populateDepartments();
             populateDesignations();
         });
     </script>

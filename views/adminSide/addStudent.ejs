@@ -9,24 +9,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
-        body {
+       body {
             font-family: 'Nunito', 'sans-serif';
             background-color: #f4f7fc;
             color: #09090a;
         }
 
         .navbar {
-            background-color: #007bff;
+            background-color: whitesmoke;
         }
 
         .navbar-brand,
         .navbar-nav .nav-link {
-            color: #ffffff !important;
+            color: rgb(230, 115, 8); /* Black color for nav link */
+            text-align: left;
         }
+        .navbar-light .navbar-nav .nav-link {
+            color: rgb(230, 115, 8); /* Black color for nav link */
+            text-align: left;
+        }
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #2319d9;
+             /* Darker color on hover */
+            
+        }
+        .navbar-nav .nav-link {
+        font-size: 21px;
+    }
 
         .bg-primary {
             background-color: #007bff !important;
-            color: #ffffff;
+           
         }
 
         .form-container {
@@ -60,74 +73,150 @@
             </div>
         </div>
 
-        <div id="add-teacher" >
-            <div class="row bg-primary p-3 text-white">
-                <div class="col-12">
-                    <h2 class="text-center">Add Student</h2>
+        <div class="row mt-3">
+            <!-- Sidebar -->
+            <div class="col-3">
+                <nav class="navbar navbar-expand-sm navbar-light">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav flex-column">
+                            <!-- Add Section with corrected IDs -->
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#addOptions">Add</a>
+                                <div class="collapse" id="addOptions">
+                                    <ul class="navbar-nav flex-column ms-3">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/addTeacher?userId=<%= userId %>">Add Teacher</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/addStudent?userId=<%= userId %>">Add Student</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/addDepartment?userId=<%= userId %>">Add Department</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/addCourse?userId=<%= userId %>">Add Course</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/addHall?userId=<%= userId %>">Add Hall</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <!-- Show Information Section with unique ID -->
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#showOptions">Show Information</a>
+                                <div class="collapse" id="showOptions">
+                                    <ul class="navbar-nav flex-column ms-3">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showDepartment?userId=<%= userId %>">Show Department Information</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showCourse?userId=<%= userId %>">Show Course Information</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showStudentInfo?userId=<%= userId %>">Show Student Information</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showTeacherInfo?userId=<%= userId %>">Show Teacher Information</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Other nav items -->
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#checkOptions">Check Details</a>
+                                <div class="collapse" id="checkOptions">
+                                    <ul class="navbar-nav flex-column ms-3">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showDepartment?userId=<%= userId %>">Check Department</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showCourse?userId=<%= userId %>">Check Max Enrollment</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/adminSide/showStudentInfo?userId=<%= userId %>">Check Valid Teaches Entry</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/adminSide/offerCourse?userId=<%= userId %>">Course Offer</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <!-- Main content -->
+            <div class="col-9">
+                <div id="add-student">
+                    <!-- Add Student Form Section -->
+                    <div class="row bg-primary p-3 text-white">
+                        <div class="col-12">
+                            <h2 class="text-center">Add Student</h2>
+                        </div>
+                    </div>
+                    <div class="my-5 form-container">
+                        <form action="/adminSide/addStudent" method="POST">
+                            <div class="mb-3">
+                                <label for="studentId" class="form-label">Student ID</label>
+                                <input type="text" class="form-control" id="studentId" name="studentId" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="studentName" class="form-label">Student Name</label>
+                                <input type="text" class="form-control" id="studentName" name="studentName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="hallName" class="form-label">Hall Name</label>
+                                <select class="form-select" id="hallName" name="hallName" required>
+                                    <option value="" disabled selected>Select Hall Name</option>
+                                    <% AllHallNameInfo.forEach(row => { %>
+                                        <option value="<%= row.HALL_NAME %>"><%= row.HALL_NAME %></option>
+                                    <% }); %>
+                                    <!-- Hall options will be dynamically populated by JavaScript -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deptName" class="form-label">Department Name</label>
+                                <select class="form-select" id="deptName" name="deptName" required>
+                                    <option value="" disabled selected>Select Department</option>
+                                    <% AllDeptNameInfo.forEach(row => { %>
+                                        <option value="<%= row.DEPT_NAME %>"><%= row.DEPT_NAME %></option>
+                                    <% }); %>
+                                    <!-- Department options will be dynamically populated by JavaScript -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="teacherName" class="form-label">Advisor Name</label>
+                                <select class="form-select" id="teacherName" name="teacherName" required>
+                                    <option value="" disabled selected>Select Advisor Name</option>
+                                    <% AllTeacherNameInfo.forEach(row => { %>
+                                        <option value="<%= row.TEACHER_NAME %>"><%= row.TEACHER_NAME %></option>
+                                    <% }); %>
+                                    <!-- Advisor options will be dynamically populated by JavaScript -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="level" class="form-label">Level</label>
+                                <input type="text" class="form-control" id="level" name="level" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="term" class="form-label">Term</label>
+                                <input type="text" class="form-control" id="term" name="term" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <input type="hidden" name="userId" value="<%= userId %>">
+                            <button type="submit" class="btn btn-outline-secondary">Add Student</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <!-- Add Student Form Section -->
-            <div class="my-5 form-container">
-            <form action="/adminSide/addStudent" method="POST">
-                <div class="mb-3">
-                    <label for="studentId" class="form-label">Student ID</label>
-                    <input type="text" class="form-control" id="studentId" name="studentId" required>
-                </div>
-                <div class="mb-3">
-                    <label for="studentName" class="form-label">Student Name</label>
-                    <input type="text" class="form-control" id="studentName" name="studentName" required>
-                </div>
-                <div class="mb-3">
-                    <label for="hallName" class="form-label">Hall Name</label>
-                    <select class="form-select" id="hallName" name="hallName" required>
-                        <option value="" disabled selected>Select Hall Name</option>
-                        <% AllHallNameInfo.forEach(row => { %>
-                            <option value="<%= row.HALL_NAME %>"><%= row.HALL_NAME %></option>
-                        <% }); %>
-                        <!-- Department options will be dynamically populated by JavaScript -->
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="deptName" class="form-label">Department Name</label>
-                    <select class="form-select" id="deptName" name="deptName" required>
-                        <option value="" disabled selected>Select Department</option>
-                        <% AllDeptNameInfo.forEach(row => { %>
-                            <option value="<%= row.DEPT_NAME %>"><%= row.DEPT_NAME %></option>
-                        <% }); %>
-                        <!-- Department options will be dynamically populated by JavaScript -->
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="teacherName" class="form-label">Advisor Name</label>
-                    <select class="form-select" id="teacherName" name="teacherName" required>
-                        <option value="" disabled selected>Select Advisor Name</option>
-                        <% AllTeacherNameInfo.forEach(row => { %>
-                            <option value="<%= row.TEACHER_NAME %>"><%= row.TEACHER_NAME %></option>
-                        <% }); %>
-                        <!-- Department options will be dynamically populated by JavaScript -->
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="level" class="form-label">Level </label>
-                    <input type="text" class="form-control" id="level" name="level" required>
-                </div>
-                <div class="mb-3">
-                    <label for="term" class="form-label"> Term</label>
-                    <input type="text" class="form-control" id="term" name="term" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                </div>
-
-                <!-- Add more form elements as needed -->
-                <input type="hidden" name="userId" value="<%= userId %>">
-                <button type="submit" class="btn btn-outline-secondary">Add Student</button>
-            </form>
         </div>
-    </div>\
     </div>
-
 </body>
 
 </html>
