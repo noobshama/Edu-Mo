@@ -500,6 +500,26 @@ app.get('/studentSide/result', (req, res) => {
     console.log('user Id at student home page: ', userId);
     res.render('studentSide/result', { userId });
 });
+app.get('/teacherSide/courseApproval', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at student home page: ', userId);
+    res.render('teacherSide/courseApproval', { userId });
+});
+app.get('/teacherSide/levelWiseCourseApproval', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at student home page: ', userId);
+    res.render('teacherSide/levelWiseCourseApproval', { userId });
+});
+app.get('/teacherSide/studentWiseCourseApproval', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at student home page: ', userId);
+    res.render('teacherSide/studentWiseCourseApproval', { userId });
+});
+app.get('/adminSide/resultPublish', (req, res) => {
+    const userId = req.query.userId;
+    console.log('user Id at student home page: ', userId);
+    res.render('adminSide/resultPublish', { userId });
+});
 
 // app.post('/adminSide/offerCourse', async (req, res) => {
 //     try {
