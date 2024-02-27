@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Teacher Personal Information - EDUCATION MOODLE (Edu-Mo)</title>
+    <title>Student Personal Information - EDUCATION MOODLE (Edu-Mo)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -27,14 +27,14 @@
             color: #ffffff;
         }
 
-        .teacher-info-table {
+        .student-info-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
 
-        .teacher-info-table th,
-        .teacher-info-table td {
+        .student-info-table th,
+        .student-info-table td {
             border: 1px solid #dee2e6;
             padding: 8px;
             text-align: left;
@@ -57,25 +57,22 @@
                 </div>
             </div>
             <table class="student-info-table">
-                <tr>
-                    <th>Student ID</th>
-                    <td><%- userInfo.STUDENT_ID %></td>
-                </tr>
+               
                 <tr>
                     <th>Student Name</th>
                     <td><%- userInfo.STUDENT_NAME %></td>
                 </tr>
                 <tr>
                     <th>Phone Number</th>
-                    <td><%- userInfo.PHN_NO %></td>
+                    <td><%- userInfo.PHONE_NO %></td>
                 </tr>
                 <tr>
                     <th>Email Address</th>
-                    <td><%- userInfo.EMAIL_ADDRESS %></td>
+                    <td><%- userInfo.EMAIL %></td>
                 </tr>
                 <tr>
                     <th>Bank Account</th>
-                    <td><%- userInfo.BANK_ACC %></td>
+                    <td><%- userInfo.BANK_ACCOUNT %></td>
                 </tr>
                 <tr>
                     <th>Address</th>
@@ -83,31 +80,31 @@
                 </tr>
                 <tr>
                     <th>Birth Date</th>
-                    <td><%- userInfo.BIRTH_DATE %></td>
+                    <td><%- userInfo.DATE_OF_BIRTH %></td>
                 </tr>
                 <tr>
-                    <th>Hall ID</th>
-                    <td><%- userInfo.HALL_ID %></td>
+                    <th>Hall Name</th>
+                    <td><%- userInfo.HALL_NAME %></td>
                 </tr>
                 <tr>
                     <th>NID</th>
                     <td><%- userInfo.NID %></td>
                 </tr>
                 <tr>
-                    <th>Department ID</th>
-                    <td><%- userInfo.DEPT_ID %></td>
+                    <th>Department Name</th>
+                    <td><%- userInfo.DEPT_NAME %></td>
                 </tr>
                 <tr>
-                    <th>Session</th>
-                    <td><%- userInfo.SESSION %></td>
+                    <th>Level</th>
+                    <td><%- userInfo.LEVEL %></td>
                 </tr>
                 <tr>
-                    <th>Is Resident</th>
-                    <td><%- userInfo.IS_RESIDENT %></td>
+                    <th>Term</th>
+                    <td><%- userInfo.TERM %></td>
                 </tr>
                 <tr>
-                    <th>Semester</th>
-                    <td><%- userInfo.SEMESTER %></td>
+                    <th>Advisor Name</th>
+                    <td><%- userInfo.TEACHER_NAME %></td>
                 </tr>
             </table>
         </div>

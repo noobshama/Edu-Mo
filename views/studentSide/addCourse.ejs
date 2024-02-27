@@ -14,11 +14,9 @@
             background-color: #f4f7fc;
             color: #09090a;
         }
-
         .navbar {
             background-color: whitesmoke;
         }
-
         .navbar-brand,
         .navbar-nav .nav-link {
             color: rgb(230, 115, 8); /* Black color for nav link */
@@ -36,53 +34,43 @@
         .navbar-nav .nav-link {
         font-size: 21px;
     }
-
         .bg-primary {
             background-color: #007bff !important;
            
         }
-
         .form-container {
             background-color: #ffffff;
             padding: 20px;
             border-radius: 10px;
         }
-
         .form-control {
             border-radius: 5px;
         }
-
         .btn-outline-secondary {
             color: #007bff;
             border-color: #007bff;
         }
-
         .btn-outline-secondary:hover {
             color: #ffffff;
             background-color: #007bff;
             border-color: #007bff;
         }
-
         /* Adjusted layout */
         .enrollment-part {
             padding-top: 20px;
         }
-
         .header-title {
             margin-bottom: 20px;
         }
-
         .custom-table {
             margin-bottom: 20px;
         }
         .custom-table th {
         font-size: 21px; /* Increase the font size to your desired value */
     }
-
         .custom-table td {
             font-size: 21px; /* Increase the font size to your desired value */
         }
-
     </style>
 </head>
 
@@ -158,24 +146,46 @@
                             <tr>
                                 <th>Course Code</th>
                                 <th>Title</th>
+                                <th>Level</th>
+                                <th>Term</th>
                                 <th>Credit</th>
                                 <th>Select</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            <tr>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="selectedCourses[]" value="hi">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </td>
-                            </tr>
-
+                            <% if (data && data.length> 0) { %>
+                                <% data.forEach(course=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= course.COURSE_CODE %>
+                                        </td>
+                                        <td>
+                                            <%= course.TITLE %>
+                                        </td>
+                                        <td>
+                                            <%= course.LEVEL %>
+                                        </td>
+                                        <td>
+                                            <%= course.TERM %>
+                                        </td>
+                                        <td>
+                                            <%= course.CREDIT %>
+                                        </td>
+                                        <td>
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    name="selectedCourses[]" value="<%= course.COURSE_ID %>">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="6">No courses available</td>
+                                            </tr>
+                                            <% } %>
                         </tbody>
                     </table>
                     <input type="hidden" name="userId" value="<%= userId %>">

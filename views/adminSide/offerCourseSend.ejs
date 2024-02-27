@@ -134,7 +134,6 @@
             <table class="table custom-table">
                 <thead>
                     <tr>
-                        <th>Course Code</th>
                         <th>TITLE</th>
                         <th>Credit </th>
                         <th>Level</th>
@@ -144,25 +143,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% AllCourseInfo.forEach(course => { %>
+                    <% if (AllCourseTitleInfo && AllCourseTitleInfo.length > 0) { %>
+                        <% AllCourseTitleInfo.forEach(course => { %>
+                            <tr>
+                                <td><%= course.TITLE %></td>
+                                <td><%= course.CREDIT %></td>
+                                <td><%= course.LEVEL %></td>
+                                <td><%= course.TERM %></td>
+                                <td><%= course.DEPT_NAME %></td>
+                                <td>
+                                    <label class="custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="selectedCourses[]" value="<%= course.COURSE_ID %>">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
                         <tr>
-                            <td><%= course.COURSE_CODE %></td>
-                            <td><%= course.TITLE %></td>
-                            <td><%= course.CREDIT %></td>
-                            <td><%= course.LEVEL %></td>
-                            <td><%= course.TERM %></td>
-                            <td><%= course.DEPT_NAME %></td>
-                            <td>
-                                <label class="custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" name="selectedCourses[]" value="<%= course.COURSE_ID %>">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
+                            <td colspan="6">No courses available</td>
                         </tr>
-                    <% }); %>
+                    <% } %>                    
                 </tbody>
             </table>
             <input type="hidden" name="userId" value="<%= userId %>">
+            <input type="hidden" name="semester" value="<%= semester %>">
+            <input type="hidden" name="deptName" value="<%= deptName %>">
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Add Hall - EDUCATION MOODLE (Edu-Mo)</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Nunito', 'sans-serif';
+            background-color: #f4f7fc;
+            color: #09090a;
+        }
+
+        .navbar {
+            background-color: #007bff;
+        }
+
+        .navbar-brand,
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+        .bg-primary {
+            background-color: #007bff !important;
+            color: #ffffff;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .btn-outline-secondary {
+            color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-outline-secondary:hover {
+            color: #ffffff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row bg-primary  text-white">
+            <div class="col-12">
+                <h1 class="text-center">Edu-Mo</h1>
+            </div>
+        </div>
+
+        <div id="add-hall">
+            <div class="row bg-primary p-3 text-white">
+                <div class="col-12">
+                    <h2 class="text-center">Add Semester</h2>
+                </div>
+            </div>
+
+            <!-- Add Hall Form Section -->
+            <div class="my-5 form-container">
+                <form action="/adminSide/addSemester" method="POST">
+                    <div class="mb-3">
+                        <label for="semesterName" class="form-label">Semster Name</label>
+                        <input type="text" class="form-control" id="semesterName" name="semesterName" required data-live-search="true">
+                    </div>
+                    
+                    
+
+                    <!-- Add more form elements as needed -->
+                    <input type="hidden" name="userId" value="<%= userId %>">
+                    <div class="small-box">
+                        <button type="submit" class="btn btn-outline-secondary">Add Semester</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+   
+</body>
+
+</html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Offer Course - EDUCATION MOODLE (Edu-Mo)</title>
     <meta charset="utf-8" />
@@ -13,42 +14,54 @@
             background-color: #f4f7fc;
             color: #09090a;
         }
+
         .navbar {
             background-color: #007bff;
         }
-        .navbar-brand, .navbar-nav .nav-link {
+
+        .navbar-brand,
+        .navbar-nav .nav-link {
             color: #ffffff !important;
         }
+
         .bg-primary {
             background-color: #007bff !important;
             color: #ffffff;
         }
+
         .form-container {
             background-color: #ffffff;
             padding: 20px;
             border-radius: 10px;
         }
-        .form-control, .form-select {
+
+        .form-control,
+        .form-select {
             border-radius: 5px;
         }
+
         .btn-outline-secondary {
             color: #007bff;
             border-color: #007bff;
         }
+
         .btn-outline-secondary:hover {
             color: #ffffff;
             background-color: #007bff;
             border-color: #007bff;
         }
+
         .custom-checkbox {
             cursor: pointer;
             margin-right: 10px;
         }
+
         .hidden {
             display: none;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="row bg-primary p-3 text-white">
@@ -56,7 +69,7 @@
                 <h1 class="text-center">Edu-Mo</h1>
             </div>
         </div>
-        <div id="offer-course" >
+        <div id="offer-course">
             <div class="row bg-primary p-3 text-white">
                 <div class="col-12">
                     <h2 class="text-center">Offer Course</h2>
@@ -67,20 +80,24 @@
                     <form id="offer-course-form" action="/adminSide/offerCourse" method="POST">
                         <div class="mb-3">
                             <label for="semester" class="form-label">Semester</label>
-                            <select class="form-select" id="semester" name="semester" required onchange="checkSelection()">
-                                <option value="">Select Semester</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <!-- Options will be dynamically loaded or hard-coded here -->
+                            <select class="form-select" id="semester" name="semester" required
+                                onchange="checkSelection()">
+                                <option value="" disabled selected>Select Semester</option>
+                                <% AllSemInfo.forEach(row=> { %>
+                                    <option value="<%= row.SEMESTER_NAME %>">
+                                        <%= row.SEMESTER_NAME %>
+                                    </option>
+                                    <% }); %>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="department" class="form-label">Department</label>
-                            <select class="form-select" id="department" name="department" required onchange="checkSelection()">
-                                <option value="">Select Department</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <!-- Options will be dynamically loaded or hard-coded here -->
+                            <select class="form-select" id="department" name="department" required
+                                onchange="checkSelection()">
+                                <option value="" disabled selected>Select Department</option>
+                                <% AllDeptNameInfo.forEach(row => { %>
+                                    <option value="<%= row.DEPT_NAME %>"><%= row.DEPT_NAME %></option>
+                                <% }); %>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -102,8 +119,9 @@
                             </select>
                         </div>
                     </form>
-                    <input type="hidden" name="userId" value="<%= userId %>">
+
                     <!-- Next button to proceed -->
+                    <input type="hidden" name="userId" value="<%= userId %>">
                     <button id="next-btn" class="btn btn-outline-secondary hidden" onclick="proceedToNext()">Next</button>
                 </div>
             </div>
@@ -119,15 +137,36 @@
 
             if (semester !== "" && department !== "" && level !== "" && term !== "") {
                 document.getElementById('next-btn').classList.remove('hidden');
+                // console.log('aaaaaaaaaaaaaa');
+                // const userId = '<%= userId %>';
+                // const url = `/adminSide/offerCourseSend?userId=${userId}&department=${department}&level=${level}&term=${term}&semester=${semester}`;
+                // window.location.href = url;     
             } else {
                 document.getElementById('next-btn').classList.add('hidden');
+                //alert("Please select all the fields.");
             }
         }
 
         function proceedToNext() {
             // You can add code here to proceed to the next step
-            console.log('Proceeding to next step...');
+            // <div class="small-box">
+            //             <button type="submit" class="btn btn-outline-secondary ">Next</button>
+            //         </div>
+            // console.log('Proceeding to next step...');
+            // console.log('aaaaaaaaaaaaaa');
+            const semester = document.getElementById('semester').value;
+            const department = document.getElementById('department').value;
+            const level = document.getElementById('level').value;
+            const term = document.getElementById('term').value;
+                const userId = '<%= userId %>';
+                console.log(semester, department, level, term);
+                const url = `/adminSide/offerCourseSend?userId=${userId}&department=${department}&level=${level}&term=${term}&semester=${semester}`;
+                window.location.href = url; 
         }
+        $(document).ready(function() {
+            $('.selectpicker').selectpicker();
+        });
     </script>
 </body>
+
 </html>

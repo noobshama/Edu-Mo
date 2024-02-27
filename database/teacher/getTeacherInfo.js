@@ -5,9 +5,10 @@ const bcrypt = require('bcrypt');
 async function getInfo(userId) {
     try {
         const query = `
-            SELECT *
-            FROM TEACHER 
-            WHERE TEACHER_ID = ?;
+            SELECT T.TEACHER_NAME,T.PHONE_NO,T.EMAIL,T.ADDRESS,T.DESIGNATION,T.SALARY,D.DEPT_NAME
+            FROM TEACHER T
+            JOIN DEPARTMENT D ON T.DEPT_ID = D.DEPT_ID
+            WHERE TEACHER_SERIAL_NO = (SELECT USER_SERIAL_NO FROM USER WHERE USER_ID = ?);
         `;
 
 
