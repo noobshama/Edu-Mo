@@ -18,10 +18,11 @@ const getOfferCourseList = async (data) => {
             AND  C.COURSE_ID NOT IN (
 	            SELECT CO.COURSE_ID
                 FROM course_offer CO
+                WHERE CO.DEPT_ID<>(SELECT D.DEPT_ID FROM DEPARTMENT D WHERE D.DEPT_NAME <> ?)
             );
         `;
         const results = await new Promise((resolve, reject) => {
-            pool.query(offerCourseListQuery, [level, term], (error, results) => {
+            pool.query(offerCourseListQuery, [level, term,departmnt], (error, results) => {
                 if (error) {
                     console.error('Error executing query:', error);
                     reject(error);

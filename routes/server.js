@@ -36,7 +36,8 @@ const { getEnrollmentAddCourseInfo } = require("../database/student/getEnrollmen
 const { getEnrollmentDropCourseInfo } = require("../database/student/getEnrollmentDropCourseInfo");
 const { dropEnrollmentFunction } = require("../database/teacher/dropEnrollment");
 const { addSemesterFunction } = require("../database/teacher/addSemester");
-
+const { getOfferCourseAssign } = require("../database/teacher/getOfferCourseAssign");
+const { teacherAssignFunction } = require("../database/teacher/teacherAssign");
 
 const app = express();
 
@@ -242,6 +243,58 @@ app.get('/adminSide/addCourse', async(req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
     }
 });
+app.get('/adminSide/addCourseAssign', async(req, res) => {
+    try {
+        const userId = req.query.userId;
+        console.log(userId);
+        const deptNameData = await getDeptNameInfo();
+        console.log(typeof deptNameData, deptNameData);
+        if (deptNameData && deptNameData.deptNameInfo) {
+            res.render("adminSide/selectCourseAssignDept", { AllDeptNameInfo: deptNameData.deptNameInfo, userId: userId });
+        } else {
+            // Handle the case where departmentData.deptInfo is not available
+            res.status(404).send("Department information not available");
+        }
+    } catch (error) {
+        console.error('Error during /adminSide/addCourseAssign:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
+
+app.post('/adminSide/selectCourseAssignDept',async(req,res) => {
+    try {
+        const userId = req.query.userId;
+        console.log(userId);
+        const offerCourseList = await getOfferCourseAssign(req.query.deptName);
+        if (offerCourseList) {
+            res.render("adminSide/courseAssign", { AllDeptNameInfo: deptNameData.deptNameInfo,AllOfferCourse: offerCourseList.offerCourseData, userId: userId });
+        } else {
+            res.status(404).send("Department or course information not available");
+        }
+    } catch (error) {
+        console.error('Error during /adminSide/addCourseAssign:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+     }
+});
+app.get('/adminSide/courseAssign', async(req, res) => {
+    try {
+        const userId = req.query.userId;
+        console.log(userId);
+        const deptName = req.query.deptName;
+        console.log(deptName);
+        const offerCourseList = await getOfferCourseAssign(req.query.deptName);
+        const teacherData = await getTeacherNameInfo();
+        console.log(offerCourseList);
+        if (offerCourseList ) {
+            res.render("adminSide/courseAssign", { deptName: deptName,AllOfferCourse: offerCourseList.results, userId: userId,AllTeacherInfo:teacherData.teacherNameInfo });
+        } else {
+            res.status(404).send("Department or course information not available");
+        }
+    } catch (error) {
+        console.error('Error during /adminSide/addCourseAssign:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+     }
+});
 app.post('/adminSide/selectDepartment',async(req,res) => {
     try {
         const userId = req.query.userId;
@@ -257,6 +310,24 @@ app.post('/adminSide/selectDepartment',async(req,res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
      }
 });
+app.post('/adminSide/courseAssign', async (req, res) => {
+    try {
+        //console.log('add teacher');
+        console.log('Received form data:', req.body);
+        const result = await teacherAssignFunction(req.body.courseId, req.body.teacherSerialNo);
+       // console.log(result.teacherId);
+        if (result.success) {
+            console.log('adminSide/adminHome: ', req.body.userId);
+            res.redirect(`/adminSide/adminHome?userId=${req.body.userId}`);
+        } else {
+            res.status(500).json(result);
+        }
+    } catch (error) {
+        console.error('Error adding offer course:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
+
 app.post('/adminSide/addCourse', async (req, res) => {
     try {
         const userId = req.body.userId;
@@ -275,6 +346,7 @@ app.post('/adminSide/addCourse', async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
     }
 });
+
 app.get('/adminSide/showCourse', async (req, res) => {
     try {
         const userId = req.query.userId;
