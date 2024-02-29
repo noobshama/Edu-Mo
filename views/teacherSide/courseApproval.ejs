@@ -111,7 +111,9 @@
                                 <div class="collapse" id="personalOptions">
                                     <ul class="navbar-nav flex-column ms-3">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/teacherSide/personalInfo?userId=<%= userId %>">Personal Information</a>
+                                            <a class="nav-link"
+                                                href="/teacherSide/personalInfo?userId=<%= userId %>">Personal
+                                                Information</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -121,14 +123,19 @@
 
                             <!-- Other nav items -->
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="collapse" href="#courseOptions">Pending Course Registration</a>
+                                <a class="nav-link" data-bs-toggle="collapse" href="#courseOptions">Pending Course
+                                    Registration</a>
                                 <div class="collapse" id="courseOptions">
                                     <ul class="navbar-nav flex-column ms-3">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/teacherSide/levelWiseCourseApproval?userId=<%= userId %>">Level / Term</a>
+                                            <a class="nav-link"
+                                                href="/teacherSide/levelWiseCourseApproval?userId=<%= userId %>">Level /
+                                                Term</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/teacherSide/studentWiseCourseApproval?userId=<%= userId %>">Student </a>
+                                            <a class="nav-link"
+                                                href="/teacherSide/studentWiseCourseApproval?userId=<%= userId %>">Student
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
@@ -139,7 +146,8 @@
             </div>
             <div class="col-lg-9 enrollment-part">
                 <!-- Content for the enrollment part goes here -->
-                <h2 class="header-title text-center" style="background-color: #007bff; color: #ffffff;">Pending Course Registration</h2>
+                <h2 class="header-title text-center" style="background-color: #007bff; color: #ffffff;">Pending Course
+                    Registration</h2>
                 <form id="course-selection-form" action="/teacherSide/courseApproval" method="POST">
                     <table class="table custom-table">
                         <thead>
@@ -155,51 +163,103 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>hi</td>
+                                <% if (data && data.length> 0) { %>
+                                    <% data.forEach(course=> { %>
+                            <tr>
                                 <td>
+                                    <%= course.COURSE_CODE %>
+                                </td>
+                                <td>
+                                    <%= course.TITLE %>
+                                </td>
+                                <td>
+                                    <%= course.CREDIT %>
+                                </td>
+                                <td>
+                                    <%= course.STUDENT_ROLL %>
+                                </td>
+                                <td>
+                                    <%= course.LEVEL %>
+                                </td>
+                                <td>
+                                    <%= course.TERM %>
+                                </td>
+                                <td>
+                                    <label class="custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="selectedEnrollments[]"
+                                            value="<%= course.ENROLLMENT_ID %>">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <!-- <td>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-outline-success">Approve</button>
+                                        <button type="button" class="btn btn-outline-success approveBtn"
+                                            data-courseId="<%= course.COURSE_ID %>">Approve</button>
                                         <button type="button" class="btn btn-outline-danger">Reject</button>
                                     </div>
-                                </td>
+                                </td> -->
                             </tr>
+                            <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="6">No courses available</td>
+                                    </tr>
+                                    <% } %>
+                                        </tr>
                         </tbody>
                     </table>
                     <input type="hidden" name="userId" value="<%= userId %>">
                     <button type="button" id="approveAllButton" class="btn btn-primary">Approve All</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <!-- <button type="button" class="btn btn-outline-success approveBtn">Approve</button>
+                    <button type="button" class="btn btn-outline-success approveBtn">Reject</button> -->
                 </form>
             </div>
         </div>
     </div>
-
+    <script src="script.js"></script>
     <script>
-        // JavaScript code for approving all courses
-        const approveAllButton = document.getElementById('approveAllButton');
-        approveAllButton.addEventListener('click', function () {
-            const approveButtons = document.querySelectorAll('.btn-outline-success');
-            approveButtons.forEach(button => button.click());
-        });
-        const approveButtons = document.querySelectorAll('.approve-btn');
-        const rejectButtons = document.querySelectorAll('.reject-btn');
+        // // JavaScript code for approving all courses
+        // const approveAllButton = document.getElementById('approveAllButton');
+        // approveAllButton.addEventListener('click', function () {
+        //     const approveButtons = document.querySelectorAll('.btn-outline-success');
+        //     approveButtons.forEach(button => button.click());
+        // });
+        // const approveButtons = document.querySelectorAll('.approve-btn');
+        // const rejectButtons = document.querySelectorAll('.reject-btn');
+        // approveButtons.forEach(button => {
+        //     button.addEventListener('click', function () {
+        //         const row = this.closest('tr');
+        //         row.classList.add('approved');
+        //     });
+        // });
+        // rejectButtons.forEach(button => {
+        //     button.addEventListener('click', function () {
+        //         const row = this.closest('tr');
+        //         row.classList.add('rejected');
+        //     });
+        // });
 
-        approveButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const row = this.closest('tr');
-                row.classList.add('approved');
-            });
-        });
 
-        rejectButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const row = this.closest('tr');
-                row.classList.add('rejected');
-            });
+
+        document.addEventListener("DOMContentLoaded", function () {
+    // Function to approve all courses
+    function approveAllCourses() {
+        // Get all checkboxes with name "selectedCourses[]"
+        const checkboxes = document.querySelectorAll('input[name="selectedEnrollments[]"]');
+        
+        // Loop through each checkbox and set checked property to true
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true;
         });
+    }
+
+    // Attach event listener to "Approve All" button
+    document.getElementById('approveAllButton').addEventListener('click', function () {
+        approveAllCourses();
+    });
+});
+
     </script>
 </body>
 

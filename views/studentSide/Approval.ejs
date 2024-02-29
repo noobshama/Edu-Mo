@@ -152,12 +152,16 @@
                         </thead>
                         <tbody>
 
-                            <tr>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>hi</td>
-                            </tr>
+                            <% data.forEach(e => { %>
+                                <tr>
+                                    <td><%= e.COURSE_CODE %></td>
+                                    <td><%= e.TITLE %></td>
+                                    <td><%= e.CREDIT %></td>
+                                    <td><%= e.STATUS %></td>
+                                    
+                                </tr>
+                       <%});%>
+            
 
                         </tbody>
                     </table>
