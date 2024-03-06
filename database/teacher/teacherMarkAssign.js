@@ -2,7 +2,7 @@
 const pool = require("../../config/dbConnection");
 const bcrypt = require('bcrypt');
 
-const teacherAssignFunction = async (data) => {
+const teacherMarkAssignFunction = async (data) => {
     try {
         const { courseTitle, deptName, teachers, userId } = data;
         const deptQuery = `
@@ -65,7 +65,7 @@ const teacherAssignFunction = async (data) => {
         console.log(results3);
 
         const query = `
-            INSERT INTO TEACHER_COURSE(
+            INSERT INTO RESULT_PUBLISH(
                 TEACHER_SERIAL_NO,
                 COURSE_ID
             )VALUES ?
@@ -80,4 +80,4 @@ const teacherAssignFunction = async (data) => {
     }
 };
 
-module.exports = { teacherAssignFunction };
+module.exports = { teacherMarkAssignFunction };
