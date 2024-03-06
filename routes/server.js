@@ -43,6 +43,8 @@ const { getDeptTeacherInfo } = require("../database/teacher/getDeptTeacherInfo")
 const { getCourseToAssignByDept } = require("../database/teacher/getCourseToAssignByDept");
 const { getMarkToAssignByDept } = require("../database/teacher/getMarkToAssignByDept");
 const { teacherMarkAssignFunction } = require("../database/teacher/teacherMarkAssign");
+const { addSemesterFunction } = require("../database/teacher/addSemester");
+const { getApprovalStatus } = require("../database/student/getApprovalStatus");
 
 const app = express();
 
@@ -394,7 +396,29 @@ app.post('/adminSide/addTeacher', async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
     }
 });
+app.get('/adminSide/addSemester', (req, res) => {
+    const userId = req.query.userId;
+    console.log(userId);
+    res.render('adminSide/addSemester', { userId });
 
+});
+app.post('/adminSide/addSemester', async (req, res) => {
+    try {
+        console.log('add semester');
+        const result = await addSemesterFunction(req.body);
+        console.log(result.semesterName);
+        if (result.success) {
+            console.log('adminSide/adminHome: ', req.body.userId);
+            res.redirect(`/adminSide/adminHome?userId=${req.body.userId}`);
+
+        } else {
+            res.status(500).json(result);
+        }
+    } catch (error) {
+        console.error('Error during registration:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
 app.get('/adminSide/offerCourse', async (req, res) => {
     try {
         const userId = req.query.userId;
@@ -841,11 +865,19 @@ app.post('/studentSide/dropCourse', async (req, res) => {
 
 
 
-app.get('/studentSide/Approval', (req, res) => {
-    const userId = req.query.userId;
-    console.log('user Id at student home page: ', userId);
-    res.render('studentSide/Approval', { userId });
+app.get('/studentSide/Approval',async (req, res) => {
+    try {
+        const userId = req.query.userId;
+        console.log('user Id at student approval status page: ', userId);
+        const dataApprove = await getApprovalStatus(userId);
+        //console.log(pendingCourseData);
+        res.render('studentSide/Approval', { data: dataApprove.results, userId: userId });
+    } catch (error) {
+        console.error('Error during /studentSide/Approval:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
 });
+
 app.get('/studentSide/selectLevelTerm', (req, res) => {
     const userId = req.query.userId;
     console.log('user Id at student home page: ', userId);
