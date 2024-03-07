@@ -45,7 +45,9 @@ const { getMarkToAssignByDept } = require("../database/teacher/getMarkToAssignBy
 const { teacherMarkAssignFunction } = require("../database/teacher/teacherMarkAssign");
 const { addSemesterFunction } = require("../database/teacher/addSemester");
 const { getApprovalStatus } = require("../database/student/getApprovalStatus");
-
+const {getApprovedCourseList}=require("../database/teacher/getApprovedCourseList")
+const {getCourseToGrade} = require("../database/teacher/selectCourseToGradeAssign")
+const {receivedGradePoint}=require("../database/teacher/receivedGradePoint")
 const app = express();
 
 app.use(express.json());
@@ -926,24 +928,6 @@ app.get('/teacherSide/courseApproval', async(req, res) => {
     }
 });
 
-app.post('/teacherSide/courseApproval',async(req,res) => {
-    try {
-        console.log('Received form data:', req.body);
-        const result = await courseApprovalFunction(req.body);
-        if (result.success) {
-            console.log('teacherSide/teacherHome: ', req.body.userId);
-            res.redirect(`/teacherSide/teacherHome?userId=${req.body.userId}`);
-        } else {
-            res.status(500).json(result);
-        }
-    } catch (error) {
-        console.error('Error during course approval:', error);
-        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
-    }
-});
-
-
-
 
 
 app.get('/teacherSide/levelWiseCourseApproval', (req, res) => {
@@ -956,13 +940,103 @@ app.get('/teacherSide/studentWiseCourseApproval', (req, res) => {
     console.log('user Id at student home page: ', userId);
     res.render('teacherSide/studentWiseCourseApproval', { userId });
 });
-app.get('/adminSide/resultPublish', (req, res) => {
-    const userId = req.query.userId;
-    console.log('user Id at student home page: ', userId);
-    res.render('adminSide/resultPublish', { userId });
+app.get('/teacherSide/selectCourseGradeAssign', async (req, res) => {
+    try {
+        const userId = req.query.userId;
+        console.log(userId );
+        
+        // Fetch the approved course list for the teacher
+        const approvedCourseList = await getApprovedCourseList(userId);
+
+        if (approvedCourseList && approvedCourseList.success) {
+            res.render("teacherSide/selectCourseGradeAssign", { approvedCourseList: approvedCourseList.results, userId: userId });
+        } else {
+            res.status(404).send("Approved course list not available");
+        }
+    } catch (error) {
+        console.error('Error during /teacherSide/selectCourseGradeAssign :', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
 });
+app.post('/teacherSide/selectCourseGradeAssign', async (req, res) => {
+    try {
+        const userId = req.body.userId; // Retrieve userId from query parameters
+         console.log(userId); 
+         console.log("hi");
+
+        const courseTitle = req.body.courseTitle;
+        const data = {
+            userId: userId,
+            courseTitle: courseTitle
+        };
+
+        const approvedCourse = await getCourseToGrade( courseTitle);
+        console.log(approvedCourse);
+
+        if (approvedCourse) {
+            res.render("teacherSide/gradeAssign", { courseTitle: courseTitle, data: approvedCourse.results, userId: userId });
+            console.log("hi");
+            console.log(userId);
+        } else {
+            res.status(404).send("Department or course information not available");
+        }
+    } catch (error) {
+        console.error('Error during /teacherSide/selectCourseGradeAssign:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+     }
+});
+// app.get('/teacherSide/gradeAssign',  async(req, res) => {
+//     try {
+//         const userId = req.body.userId; // Retrieve userId from query parameters
+//          console.log(userId); 
+//          console.log("hi");
+
+//         const courseTitle = req.body.courseTitle;
+//         const data = {
+//             userId: userId,
+//             courseTitle: courseTitle
+//         };
+
+//         const approvedCourse = await getCourseToGrade( courseTitle);
+//         console.log(approvedCourse);
+
+//         if (approvedCourse) {
+//             res.render("teacherSide/gradeAssign", { courseTitle: courseTitle, data: approvedCourse.results, userId: userId });
+//             console.log("hi");
+//             console.log(userId);
+//         } else {
+//             res.status(404).send("Department or course information not available");
+//         }
+//     } catch (error) {
+//         console.error('Error during /teacherSide/selectCourseGradeAssign:', error);
+//         res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+//      }
+// });
 
 
+app.post('/teacherSide/gradeAssign', async (req, res) => {
+    try {
+        console.log('Received user grades:', req.body.userGrades);
+       // console.log('Received user grades:', res.query.userId);
+
+        // Iterate over each userId and grade pair and print them
+        req.body.userGrades.forEach(({ userId, grade }) => {
+            console.log(`User ID: ${userId}, Grade: ${grade}`);
+        });
+          
+        const result = await receivedGradePoint(req.body.userGrades);
+        // Handle the result accordingly
+        if (result.success) {
+            console.log('teacherSide/teacherHome: ', req.query.userId);
+            res.redirect(`/teacherSide/teacherHome?userId=${req.query.userId}`);
+        } else {
+            res.status(500).json(result);
+        }
+    } catch (error) {
+        console.error('Error adding offer course:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+});
 
 
 

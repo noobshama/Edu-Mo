@@ -107,72 +107,39 @@
                         <ul class="navbar-nav flex-column">
                             <!-- Add Section with corrected IDs -->
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="collapse" href="#addOptions">Add</a>
-                                <div class="collapse" id="addOptions">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#personalOptions">Information</a>
+                                <div class="collapse" id="personalOptions">
                                     <ul class="navbar-nav flex-column ms-3">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/addTeacher?userId=<%= userId %>">Add Teacher</a>
+                                            <a class="nav-link" href="/teacherSide/personalInfo?userId=<%= userId %>">Personal Information</a> 
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#courseOptions">Pending Course Registration</a>
+                                <div class="collapse" id="courseOptions">
+                                    <ul class="navbar-nav flex-column ms-3">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/teacherSide/courseApproval?userId=<%= userId %>">Course</a> 
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/addStudent?userId=<%= userId %>">Add Student</a>
+                                            <a class="nav-link" href="/teacherSide/levelWiseCourseApproval?userId=<%= userId %>">Level / Term</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/addDepartment?userId=<%= userId %>">Add Department</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/addCourse?userId=<%= userId %>">Add Course</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/addHall?userId=<%= userId %>">Add Hall</a>
+                                            <a class="nav-link" href="/teacherSide/studentWiseCourseApproval?userId=<%= userId %>">Student</a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
 
                             <!-- Show Information Section with unique ID -->
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="collapse" href="#showOptions">Show Information</a>
-                                <div class="collapse" id="showOptions">
-                                    <ul class="navbar-nav flex-column ms-3">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showDepartment?userId=<%= userId %>">Show Department Information</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showCourse?userId=<%= userId %>">Show Course Information</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showStudentInfo?userId=<%= userId %>">Show Student Information</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showTeacherInfo?userId=<%= userId %>">Show Teacher Information</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
+                           
                             <!-- Other nav items -->
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="collapse" href="#checkOptions">Check Details</a>
-                                <div class="collapse" id="checkOptions">
-                                    <ul class="navbar-nav flex-column ms-3">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showDepartment?userId=<%= userId %>">Check Department</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showCourse?userId=<%= userId %>">Check Max Enrollment</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/adminSide/showStudentInfo?userId=<%= userId %>">Check Valid Teaches Entry</a>
-                                        </li>
-
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/adminSide/offerCourse?userId=<%= userId %>">Course Offer</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/adminSide/resultPublish?userId=<%= userId %>">Result Publish</a>
-                            </li>
+                           
+                           
                         </ul>
                     </div>
                 </nav>
@@ -180,7 +147,7 @@
             <div class="col-lg-9 enrollment-part">
                 <!-- Content for the enrollment part goes here -->
                 <h2 class="header-title text-center" style="background-color: #007bff; color: #ffffff;">Result Publish</h2>
-                <form id="course-selection-form" action="/adminSide/resultPublish" method="POST">
+                <form id="course-selection-form" action="/teacherSide/gradeAssign" method="POST">
                     <table class="table custom-table">
                         <thead>
                             <tr>
@@ -195,29 +162,79 @@
                             </tr>
                         </thead>
                         <tbody>
-
+                            <% if (data && data.length> 0) { %>
+                                <% data.forEach(grade=> { %>
                             <tr>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>hi</td>
-                                <td>hi</td>
+                                <td><%= grade.USER_ID %></td>
+                                <td><%= grade.LEVEL %></td>
+                                <td><%= grade.TERM %></td>
+                                <td><%= grade.DEPT_NAME %></td>
+                                <td><%= grade.COURSE_CODE %></td>
+                                <td><%= grade.TITLE %></td>
                                 <td>
                                     <input type="text" class="form-control approve-textbox" value="" style="display: none;">
-                                    <input type="number" class="form-control approve-textbox" id="inputNumber" placeholder="Enter The Grade">
+                                    <input type="number" class="form-control approve-textbox" id="grade" name="grade" data-userid="<%= grade.USER_ID %>" data-coursecode="<%= grade.COURSE_CODE %>" placeholder="Enter The Grade">
+
+
                                 </td>
                             </tr>
+                            <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="6">No courses available</td>
+                                    </tr>
+                                    <% } %>
+                                        </tr>
 
                         </tbody>
                     </table>
+                    <input type="hidden" name="userId" value="<%= userId %>">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
 
         </div>
-        <input type="hidden" name="userId" value="<%= userId %>">
+       
     </div>
+    <script>
+       document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("course-selection-form");
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Collect all grade inputs
+        const grades = document.querySelectorAll("#grade");
+
+        // Create an array to store userId, grade, and courseCode
+        const userGrades = [];
+
+        // Iterate over each grade input and collect its value along with userId and courseCode
+        grades.forEach(function(grade) {
+            const userId = grade.dataset.userid; // Get userId associated with this grade
+            const courseCode = grade.dataset.coursecode; // Get course_code associated with this grade
+            userGrades.push({ userId: userId, grade: grade.value, courseCode: courseCode });
+        });
+
+        // Send userId, grade, and courseCode data to the backend using AJAX
+        fetch("/teacherSide/gradeAssign", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ userGrades: userGrades })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Handle response from the server
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    });
+});
+    </script>
+    
 </body>
 
 </html>
