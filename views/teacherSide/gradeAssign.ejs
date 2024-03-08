@@ -173,7 +173,7 @@
                                 <td><%= grade.TITLE %></td>
                                 <td>
                                     <input type="text" class="form-control approve-textbox" value="" style="display: none;">
-                                    <input type="number" class="form-control approve-textbox" id="grade" name="grade" data-userid="<%= grade.USER_ID %>" data-coursecode="<%= grade.COURSE_CODE %>" placeholder="Enter The Grade">
+                                    <input type="number" class="form-control approve-textbox" id="grade" name="grade" data-userroll="<%= grade.USER_ID %>" data-coursecode="<%= grade.COURSE_CODE %>" placeholder="Enter The Grade">
 
 
                                 </td>
@@ -211,9 +211,9 @@
 
         // Iterate over each grade input and collect its value along with userId and courseCode
         grades.forEach(function(grade) {
-            const userId = grade.dataset.userid; // Get userId associated with this grade
+            const userRoll = grade.dataset.userroll; // Get userId associated with this grade
             const courseCode = grade.dataset.coursecode; // Get course_code associated with this grade
-            userGrades.push({ userId: userId, grade: grade.value, courseCode: courseCode });
+            userGrades.push({ userRoll: userRoll, grade: grade.value, courseCode: courseCode });
         });
 
         // Send userId, grade, and courseCode data to the backend using AJAX

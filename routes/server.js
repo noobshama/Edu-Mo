@@ -45,9 +45,9 @@ const { getMarkToAssignByDept } = require("../database/teacher/getMarkToAssignBy
 const { teacherMarkAssignFunction } = require("../database/teacher/teacherMarkAssign");
 const { addSemesterFunction } = require("../database/teacher/addSemester");
 const { getApprovalStatus } = require("../database/student/getApprovalStatus");
-const {getApprovedCourseList}=require("../database/teacher/getApprovedCourseList")
-const {getCourseToGrade} = require("../database/teacher/selectCourseToGradeAssign")
-const {receivedGradePoint}=require("../database/teacher/receivedGradePoint")
+const {getApprovedCourseList}=require("../database/teacher/getApprovedCourseList");
+const {getCourseToGrade} = require("../database/teacher/selectCourseToGradeAssign");
+const {receivedGradePoint}=require("../database/teacher/receivedGradePoint");
 const app = express();
 
 app.use(express.json());
@@ -970,7 +970,7 @@ app.post('/teacherSide/selectCourseGradeAssign', async (req, res) => {
             courseTitle: courseTitle
         };
 
-        const approvedCourse = await getCourseToGrade( courseTitle);
+        const approvedCourse = await getCourseToGrade( data );
         console.log(approvedCourse);
 
         if (approvedCourse) {
@@ -1017,11 +1017,11 @@ app.post('/teacherSide/selectCourseGradeAssign', async (req, res) => {
 app.post('/teacherSide/gradeAssign', async (req, res) => {
     try {
         console.log('Received user grades:', req.body.userGrades);
-       // console.log('Received user grades:', res.query.userId);
+       console.log('Received user grades:', res.query.userId);
 
         // Iterate over each userId and grade pair and print them
-        req.body.userGrades.forEach(({ userId, grade }) => {
-            console.log(`User ID: ${userId}, Grade: ${grade}`);
+        req.body.userGrades.forEach(({ userRoll, grade }) => {
+            console.log(`User ID: ${userRoll}, Grade: ${grade}`);
         });
           
         const result = await receivedGradePoint(req.body.userGrades);

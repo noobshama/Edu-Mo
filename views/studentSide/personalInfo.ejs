@@ -107,6 +107,9 @@
                     <td><%- userInfo.TEACHER_NAME %></td>
                 </tr>
             </table>
+            <div class="text-center mt-3">
+                <a href="/studentSide/personalInfoUpdate?userId=<%= userId %>" class="btn btn-primary">Update Information</a>
+            </div>
         </div>
         <input type="hidden" name="userId" value="<%= userId %>">
     </div>

@@ -3,7 +3,8 @@ const pool = require("../../config/dbConnection");
 const bcrypt = require('bcrypt');
 
 
-const getCourseToGrade = async ( courseTitle) => {
+const getCourseToGrade = async ( data) => {
+    const {userId, courseTitle} = data;
     try {
         console.log( courseTitle);
         const query = `
