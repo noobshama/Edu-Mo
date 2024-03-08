@@ -57,37 +57,49 @@
                     <h2>Personal Information</h2>
                 </div>
             </div>
-            <!-- Teacher Information Form -->
-            <form action="/teacherSide/personalInfoUpdate" method="POST">
-                <table class="teacher-info-table">
-                    
-                    <tr>
-                        <th>Teacher Name</th>
-                        <td><input type="text" id="teacherName" name="teacherName" class="form-control" ></td>
-                    </tr>
-                    <tr>
-                        <th>Phone Number</th>
-                        <td><input type="text" id="phoneNumber" name="phoneNumber" class="form-control" ></td>
-                    </tr>
-                    <tr>
-                        <th>Email Address</th>
-                        <td><input type="email" id="emailAddress" name="emailAddress" class="form-control" ></td>
-                    </tr>
-                   
-                    <tr>
-                        <th>Address</th>
-                        <td><input type="text" id="address" name="address" class="form-control" ></td>
-                    </tr>
-                  
-                   
-                    
-                </table>
-                <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-primary">Update Information</button>
-                </div>
-                <input type="hidden" name="userId" value="<%= userId %>">
-            </form>
+            <!-- Teacher Information Table -->
+            <table class="teacher-info-table">
+                
+                <tr>
+                    <th>Teacher Name</th>
+                    <td><%- userInfo.TEACHER_NAME %></td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td><%- userInfo.PHONE_NO %></td>
+                </tr>
+                <tr>
+                    <th>Email Address</th>
+                    <td><%- userInfo.EMAIL %></td>
+                </tr>
+                
+                <tr>
+                    <th>Address</th>
+                    <td><%- userInfo.ADDRESS %></td>
+                </tr>
+               
+                
+                
+                <tr>
+                    <th>Department Name</th>
+                    <td><%- userInfo.DEPT_NAME %></td>
+                </tr>
+                <tr>
+                    <th>Designation</th>
+                    <td><%- userInfo.DESIGNATION %></td>
+                </tr>
+                <tr>
+                    <th>Salary</th>
+                    <td><%- userInfo.SALARY %></td>
+                </tr>
+
+                
+            </table>
+            <div class="text-center mt-3">
+                <a href="/teacherSide/personalInfoUpdate?userId=<%= userId %>" class="btn btn-primary">Update Information</a>
+            </div>
         </div>
+        <input type="hidden" name="userId" value="<%= userId %>">
     </div>
 </body>
 
