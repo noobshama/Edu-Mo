@@ -151,27 +151,36 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                            <% data.forEach(e => { %>
-                                <tr>
-                                    <td><%= e.COURSE_CODE %></td>
-                                    <td><%= e.TITLE %></td>
-                                    <td><%= e.CREDIT %></td>
-                                    <td><%= e.STATUS %></td>
-                                    
-                                </tr>
-                       <%});%>
-            
-
+                            <% if (data && data.length> 0) { %>
+                                <% data.forEach(course=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= course.COURSE_CODE %>
+                                        </td>
+                                        <td>
+                                            <%= course.TITLE %>
+                                        </td>
+                                        <td>
+                                            <%= course.CREDIT %>
+                                        </td>
+                                        <td>
+                                            <%= course.STATUS %>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="6">No courses available</td>
+                                            </tr>
+                                            <% } %>
+                             </tr>
                         </tbody>
                     </table>
 
                 </form>
             </div>
-
         </div>
         <input type="hidden" name="userId" value="<%= userId %>">
     </div>
 </body>
-
 </html>

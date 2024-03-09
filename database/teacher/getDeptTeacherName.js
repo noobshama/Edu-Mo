@@ -2,24 +2,22 @@
 const pool = require("../../config/dbConnection");
 const bcrypt = require('bcrypt');
 
-async function getDeptTeacherInfo(data) {
-    const {  userId, deptName, courseTitle} = data;
+async function getDeptTeacherNameInfo(data) {
+    const {  userId, deptName} = data;
     console.log("Received department name:", deptName);
-    console.log(deptName);
+        console.log(deptName);
     try {
         const query = `
-        SELECT T.TEACHER_NAME,T.TEACHER_SERIAL_NO, T.DEPT_ID
+        SELECT T.TEACHER_NAME, T.TEACHER_SERIAL_NO
         FROM TEACHER T
-        WHERE 
-            T.DEPT_ID = (SELECT 
-                            C.DEPT_ID 
-                            FROM COURSE C 
-                            WHERE C.TITLE = SUBSTR(?, 1, INSTR(?,'-')-1));
+        JOIN DEPARTMENT D ON T.DEPT_ID = D.DEPT_ID
+        WHERE T.DESIGNATION = 'Professor' and D.DEPT_ID=(SELECT DEPT_ID FROM DEPARTMENT WHERE DEPT_NAME= ?);
+        
         `;
 
 
         const results = await new Promise((resolve, reject) => {
-            pool.query(query, [courseTitle, courseTitle], (error, results) => {
+            pool.query(query, [deptName], (error, results) => {
                 if (error) {
                     console.error('Error executing query:', error);
                     reject(error);
@@ -40,4 +38,4 @@ async function getDeptTeacherInfo(data) {
     }
 };
 
-module.exports = { getDeptTeacherInfo };
+module.exports = { getDeptTeacherNameInfo };

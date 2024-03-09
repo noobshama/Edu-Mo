@@ -115,29 +115,6 @@
                                                 href="/teacherSide/personalInfo?userId=<%= userId %>">Personal
                                                 Information</a>
                                         </li>
-
-                                    </ul>
-                                </div>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="collapse" href="#courseOptions">Pending Course
-                                    Registration</a>
-                                <div class="collapse" id="courseOptions">
-                                    <ul class="navbar-nav flex-column ms-3">
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="/teacherSide/courseApproval?userId=<%= userId %>">Course</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="/teacherSide/levelWiseCourseApproval?userId=<%= userId %>">Level /
-                                                Term</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="/teacherSide/studentWiseCourseApproval?userId=<%= userId %>">Student</a>
-                                        </li>
                                     </ul>
                                 </div>
                             </li>
@@ -145,127 +122,145 @@
                             <!-- Show Information Section with unique ID -->
 
                             <!-- Other nav items -->
-
-
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#courseOptions">Pending Course Drop From
+                                    Registration</a>
+                                <div class="collapse" id="courseOptions">
+                                    <ul class="navbar-nav flex-column ms-3">
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                                href="/teacherSide/levelWiseCourseApproval?userId=<%= userId %>">Level /
+                                                Term</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                                href="/teacherSide/studentWiseCourseApproval?userId=<%= userId %>">Student
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </nav>
             </div>
             <div class="col-lg-9 enrollment-part">
                 <!-- Content for the enrollment part goes here -->
-                <h2 class="header-title text-center" style="background-color: #007bff; color: #ffffff;">Result Publish
-                </h2>
-                <form id="course-selection-form" action="/teacherSide/gradeAssign" method="POST">
+                <h2 class="header-title text-center" style="background-color: #007bff; color: #ffffff;">Pending Course
+                    Registration</h2>
+                <form id="course-selection-form" action="/teacherSide/dropCourseApproval" method="POST">
                     <table class="table custom-table">
                         <thead>
                             <tr>
+                                <th>Course Code</th>
+                                <th>Title</th>
+                                <th>Credit</th>
                                 <th>Student Roll</th>
                                 <th>Level</th>
                                 <th>Term</th>
-                                <th>Department</th>
-                                <th>Course Code</th>
-                                <th>Title</th>
-                                <th>Grade</th>
-
+                                <th>Approve</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% if (data && data.length> 0) { %>
-                                <% data.forEach(grade=> { %>
+                            <tr>
+                                <% if (data && data.length> 0) { %>
+                                    <% data.forEach(course=> { %>
+                            <tr>
+                                <td>
+                                    <%= course.COURSE_CODE %>
+                                </td>
+                                <td>
+                                    <%= course.TITLE %>
+                                </td>
+                                <td>
+                                    <%= course.CREDIT %>
+                                </td>
+                                <td>
+                                    <%= course.STUDENT_ROLL %>
+                                </td>
+                                <td>
+                                    <%= course.LEVEL %>
+                                </td>
+                                <td>
+                                    <%= course.TERM %>
+                                </td>
+                                <td>
+                                    <label class="custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="selectedEnrollments[]"
+                                            value="<%= course.ENROLLMENT_ID %>">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <!-- <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-outline-success approveBtn"
+                                            data-courseId="<%= course.COURSE_ID %>">Approve</button>
+                                        <button type="button" class="btn btn-outline-danger">Reject</button>
+                                    </div>
+                                </td> -->
+                            </tr>
+                            <% }); %>
+                                <% } else { %>
                                     <tr>
-                                        <td>
-                                            <%= grade.STUDENT_ROLL %>
-                                        </td>
-                                        <td>
-                                            <%= grade.LEVEL %>
-                                        </td>
-                                        <td>
-                                            <%= grade.TERM %>
-                                        </td>
-                                        <td>
-                                            <%= grade.DEPT_NAME %>
-                                        </td>
-                                        <td>
-                                            <%= grade.COURSE_CODE %>
-                                        </td>
-                                        <td>
-                                            <%= grade.TITLE %>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control approve-textbox" value=""
-                                                style="display: none;">
-                                            <input type="number" class="form-control approve-textbox" id="grade"
-                                                name="grade" data-student_roll="<%= grade.STUDENT_ROLL %>"
-                                                data-coursecode="<%= grade.COURSE_CODE %>" placeholder="Enter The Grade"
-                                                step="0.01">
-
-
-                                        </td>
+                                        <td colspan="6">No courses available</td>
                                     </tr>
-                                    <% }); %>
-                                        <% } else { %>
-                                            <tr>
-                                                <td colspan="6">No courses available</td>
-                                            </tr>
-                                            <% } %>
-                                                </tr>
-
+                                    <% } %>
+                                        </tr>
                         </tbody>
                     </table>
                     <input type="hidden" name="userId" value="<%= userId %>">
+                    <button type="button" id="approveAllButton" class="btn btn-primary">Approve All</button>
                     <button type="submit" class="btn btn-primary">Submit</button>
+                    <!-- <button type="button" class="btn btn-outline-success approveBtn">Approve</button>
+                    <button type="button" class="btn btn-outline-success approveBtn">Reject</button> -->
                 </form>
             </div>
-
         </div>
-
     </div>
+    <script src="script.js"></script>
     <script>
+        // // JavaScript code for approving all courses
+        // const approveAllButton = document.getElementById('approveAllButton');
+        // approveAllButton.addEventListener('click', function () {
+        //     const approveButtons = document.querySelectorAll('.btn-outline-success');
+        //     approveButtons.forEach(button => button.click());
+        // });
+        // const approveButtons = document.querySelectorAll('.approve-btn');
+        // const rejectButtons = document.querySelectorAll('.reject-btn');
+        // approveButtons.forEach(button => {
+        //     button.addEventListener('click', function () {
+        //         const row = this.closest('tr');
+        //         row.classList.add('approved');
+        //     });
+        // });
+        // rejectButtons.forEach(button => {
+        //     button.addEventListener('click', function () {
+        //         const row = this.closest('tr');
+        //         row.classList.add('rejected');
+        //     });
+        // });
+
+
+
         document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("course-selection-form");
-
-            form.addEventListener("submit", function (event) {
-                event.preventDefault(); 
-                const grades = document.querySelectorAll("#grade");
-                const userGrades = [];
-                grades.forEach(function (grade) {
-                    const student_roll = grade.dataset.student_roll; 
-                    const courseCode = grade.dataset.coursecode; 
-                    userGrades.push({ student_roll: student_roll, grade: grade.value, courseCode: courseCode });
-                });
-
-                const userId = '<%= userId %>';
-                const requestBody = JSON.stringify({
-                    userId: userId,
-                    userGrades: userGrades
-                });
-
-                
-                fetch("/teacherSide/gradeAssign", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: requestBody,
-                    redirect: 'follow'
-                })
-                    .then(response => {
-                        if (response.redirected) {
-                            window.location.href = response.url;
-                        } else {
-                            return response.json();
-                        }
-                    } )
-                    .then(data => {
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                    });
-            });
+    // Function to approve all courses
+    function approveAllCourses() {
+        // Get all checkboxes with name "selectedCourses[]"
+        const checkboxes = document.querySelectorAll('input[name="selectedEnrollments[]"]');
+        
+        // Loop through each checkbox and set checked property to true
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true;
         });
-    </script>
+    }
 
+    // Attach event listener to "Approve All" button
+    document.getElementById('approveAllButton').addEventListener('click', function () {
+        approveAllCourses();
+    });
+});
+
+    </script>
 </body>
 
 </html>

@@ -142,7 +142,7 @@
                         <select class="selectpicker form-select" id="courseTitle" name="courseTitle">
                             <option value="" disabled selected>Select Course</option>
                             <% approvedCourseList.forEach(row => { %>
-                                <option value="<%= row.TITLE %>"><%= row.TITLE %></option>
+                                <option value="<%= row.FULL_TITLE %>"><%= row.FULL_TITLE %></option>
                             <% }); %>
                         </select>
                     </div>

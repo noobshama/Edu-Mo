@@ -76,48 +76,41 @@
                 </div>
 
                 <div class="section-content">
+                    <h3 class="section-title">Department Name</h3>
+                    <p><%= data.FULL_NAME %></p>
+                </div>
+
+                <div class="section-content">
                     <h3 class="section-title">Total Teachers</h3>
-                    <p>Total number of teachers: <% totalTeachers %></p>
+                    <p>Total number of teachers: <%= data.TCOUNT %></p>
                 </div>
 
                 <div class="section-content">
                     <h3 class="section-title">Total Students</h3>
-                    <p>Total number of students: <% totalStudents %></p>
+                    <p>Total number of students: <%= data.SCOUNT %></p>
                 </div>
 
                 <div class="section-content">
                     <h3 class="section-title">Total Courses</h3>
-                    <p>Total number of courses: <% totalCourses %></p>
+                    <p>Total number of courses: <%= data.CCOUNT %></p>
                 </div>
 
                 <div class="section-content">
                     <h3 class="section-title">Total Course Offers</h3>
-                    <p>Total number of course offers: <% totalCourseOffers %></p>
+                    <p>Total number of course offers: <%= data.OCCOUNT %></p>
                 </div>
 
                 <div class="section-content">
                     <h3 class="section-title">Level-wise Information</h3>
-                    <% for (let i = 1; i <= 8; i++) { %>
-                        <h4>Level <%= i %></h4>
-                        <table class="level-table">
-                            <tr>
-                                <th>Department</th>
-                                <th>Total Students</th>
-                                <th>Total Passed Students</th>
-                            </tr>
-                            <% departmentWiseInfo.forEach(department => { %>
-                                <tr>
-                                    <td><%- department.name %></td>
-                                    <td><%- department.levelWiseInfo[i].totalStudents %></td>
-                                    <td><%- department.levelWiseInfo[i].totalPassedStudents %></td>
-                                </tr>
-                            <% }); %>
-                        </table>
-                    <% } %>
+                    <p>Total number of students in level 1, term 1: <%= data.S11 %></p>
+                    <p>Total number of students in level 1, term 2: <%= data.S12 %></p>
+                    <p>Total number of students in level 2, term 1: <%= data.S21 %></p>
+                    <p>Total number of students in level 2, term 2: <%= data.S22 %></p>
+                    <p>Total number of students in level 3, term 1: <%= data.S31 %></p>
+                    <p>Total number of students in level 3, term 2: <%= data.S32 %></p>
+                    <p>Total number of students in level 4, term 1: <%= data.S41 %></p>
+                    <p>Total number of students in level 4, term 2: <%= data.S42 %></p>
                 </div>
-            </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Back</button>
             </div>
             <input type="hidden" name="userId" value="<%= userId %>">
         </div>

@@ -5,7 +5,23 @@ const bcrypt = require('bcrypt');
 const addStudentFunction = async (studentData) => {
     try {
         const { studentId, studentName, hallName, deptName, teacherName, level, term, password, userId } = studentData;
+        const passwordCheckQuery = `
+            SELECT check_password_length(?) AS valid_password
+        `;
 
+        // Executing the password check query
+        const passwordCheckResult = await new Promise((resolve, reject) => {
+            pool.query(passwordCheckQuery, [password], (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+        if (!passwordCheckResult[0].valid_password) {
+            return { success: false, message: 'Password needs to be at least 8 characters' };
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const deptQuery = `
@@ -76,7 +92,7 @@ const addStudentFunction = async (studentData) => {
                 ROLE
             ) VALUES (?,?,?)
         `;
-        console.log('user add successfully');
+        console.log('user added successfully');
 
         const values = [
             studentId, hashedPassword, 'student'
@@ -87,53 +103,50 @@ const addStudentFunction = async (studentData) => {
                 return { success: false, message: 'can not insert user' };
             } else {
                 console.log('Query executed successfully');
-                const findSerialQuery = `
+            const findSerialQuery = `
             SELECT USER_SERIAL_NO FROM USER
             WHERE USER_ID =?
         `;
-                const result = await new Promise((resolve, reject) => {
-                    pool.query(findSerialQuery, studentId, (error, results) => { // pass query directly, don't call the function
-                        if (error) {
-                            console.error('Error executing query:', error);
-                            reject(error);
-                        } else {
-                            resolve(results);
-                        }
-                    });
+            const result = await new Promise((resolve, reject) => {
+                pool.query(findSerialQuery, studentId, (error, results) => { // pass query directly, don't call the function
+                    if (error) {
+                        console.error('Error executing query:', error);
+                        reject(error);
+                    } else {
+                        resolve(results);
+                    }
                 });
-                if (result.length <= 0) {
-                    return { success: false, message: 'Student not found' };}
-                    const serial = result[0].USER_SERIAL_NO;
-                    console.log(serial);
-    
-                    const query = `
-                INSERT INTO STUDENT (
-                STUDENT_SERIAL_NO,
-                STUDENT_NAME,
-                HALL_ID,
-                DEPT_ID,
-                TERM,
-                LEVEL,
-                ADVISOR_SERIAL_NO
-                ) VALUES (?,?,?,?,?,?,?)
-            `;
-    
-    
-                    const info = await pool.query(query, [serial, studentName, hallId, deptId, term, level, teacherSerialno]);
-    
-                    const binds = { userId };
-    
-                    console.log("student added successfully");
-    
-                    console.log(studentId);
-                }
             });
-    
-            return { success: true, message: 'student added successfully', studentId };
-        } catch (error) {
-            console.error('Error during student addition:', error);
-            return { success: false, message: 'Internal Server Error', error: error.message };
+            if (result.length <= 0) {
+                return { success: false, message: 'Student not found' };
+            }
+            const serial = result[0].USER_SERIAL_NO;
+            console.log(serial);
+
+            const query = `
+            INSERT INTO STUDENT (
+            STUDENT_SERIAL_NO,
+            STUDENT_NAME,
+            HALL_ID,
+            DEPT_ID,
+            TERM,
+            LEVEL,
+            ADVISOR_SERIAL_NO
+            ) VALUES (?,?,?,?,?,?,?)
+        `;
+            const info = await pool.query(query, [serial, studentName, hallId, deptId, term, level, teacherSerialno]);
+            
+            console.log("student added successfully");
+
+            console.log(studentId);
         }
-    };
-    
-    module.exports = { addStudentFunction };
+        });
+
+    return { success: true, message: 'student added successfully', studentId };
+} catch (error) {
+    console.error('Error during student addition:', error);
+    return { success: false, message: 'Internal Server Error', error: error.message };
+}
+};
+
+module.exports = { addStudentFunction };

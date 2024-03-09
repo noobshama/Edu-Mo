@@ -5,9 +5,10 @@ const bcrypt = require('bcrypt');
 const getApprovedCourseList = async (userId) => {
     try {
         const query = `
-        SELECT DISTINCT C.TITLE
+        SELECT DISTINCT C.TITLE, CONCAT(C.TITLE , '-' , (SELECT DEPT_NAME FROM DEPARTMENT WHERE DEPT_ID = CO.DEPT_ID)) AS FULL_TITLE
 FROM ENROLLMENT E 
 JOIN COURSE C ON E.COURSE_ID = C.COURSE_ID
+JOIN course_offer CO ON CO.COURSE_ID = C.COURSE_ID
 WHERE E.COURSE_ID IN (
     SELECT RP.COURSE_ID
     FROM RESULT_PUBLISH RP

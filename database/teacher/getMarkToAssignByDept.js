@@ -34,20 +34,23 @@ const getMarkToAssignByDept = async (deptName) => {
         C.CREDIT, 
         C.COURSE_CODE, 
         C.COURSE_ID,
-        C.DEPT_ID
+		CO.DEPT_ID,
+		CONCAT(C.TITLE , '-' , (SELECT DEPT_NAME FROM DEPARTMENT WHERE DEPT_ID = CO.DEPT_ID)) AS FULL_TITLE
         FROM 
             COURSE_OFFER CO 
         JOIN 
             COURSE C ON C.COURSE_ID = CO.COURSE_ID
         WHERE 
-            CO.DEPT_ID = (SELECT D.DEPT_ID FROM DEPARTMENT D WHERE D.DEPT_NAME = 'EEE') AND
-           
-            C.DEPT_ID = (SELECT D.DEPT_ID FROM DEPARTMENT D WHERE D.DEPT_NAME = (SELECT D.DEPT_NAME FROM DEPARTMENT D WHERE C.DEPT_ID=D.DEPT_ID));
+            CO.DEPT_ID = (SELECT D.DEPT_ID FROM DEPARTMENT D WHERE D.DEPT_NAME = ?) 
+            AND C.DEPT_ID = (SELECT D.DEPT_ID FROM DEPARTMENT D WHERE D.DEPT_NAME = (SELECT D.DEPT_NAME FROM DEPARTMENT D WHERE C.DEPT_ID=D.DEPT_ID))
+            AND NOT EXISTS(
+                SELECT * FROM result_publish WHERE COURSE_ID = C.COURSE_ID AND DEPT_ID = CO.DEPT_ID
+            );
 
         `;
         // console.log(results);
         const results = await new Promise((resolve, reject) => {
-            pool.query(query, [deptName,deptName], (error, results) => {
+            pool.query(query, [deptName], (error, results) => {
                 if (error) {
                     console.error('Error executing query:', error);
                     reject(error);

@@ -2,9 +2,9 @@
 const pool = require("../../config/dbConnection");
 const bcrypt = require('bcrypt');
 
-const teacherMarkAssignFunction = async (data) => {
+const deptHeadAssign = async (data) => {
     try {
-        const { courseTitle, deptName, teachers, userId } = data;
+        const {  deptName, teachers, userId } = data;
         const deptQuery = `
             SELECT DEPT_ID FROM DEPARTMENT
             WHERE DEPT_NAME =?
@@ -25,25 +25,7 @@ const teacherMarkAssignFunction = async (data) => {
         const deptId = results[0].DEPT_ID;
         console.log(deptId);
 
-        const courseIdQuery = `
-            SELECT COURSE_ID FROM COURSE
-            WHERE TITLE =SUBSTR (?, 1, INSTR(?,'-')-1);
-        `;
-        const results2 = await new Promise((resolve, reject) => {
-            pool.query(courseIdQuery, [courseTitle,courseTitle], (error, results) => { // pass query directly, don't call the function
-                if (error) {
-                    console.error('Error executing query:', error);
-                    reject(error);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
-        if (results2.length <= 0) {
-            return { success: false, message: 'Course not found' };
-        }
-        const courseId = results2[0].COURSE_ID;
-        console.log(courseId);
+       ;
 
         const teacherSerialQuery = `
             SELECT TEACHER_SERIAL_NO FROM TEACHER
@@ -65,13 +47,12 @@ const teacherMarkAssignFunction = async (data) => {
         console.log(results3);
 
         const query = `
-            INSERT INTO RESULT_PUBLISH(
-                TEACHER_SERIAL_NO,
-                COURSE_ID,
-                DEPT_ID
+            INSERT INTO DEPARTMENT_HEAD_ASSIGN(
+                DEPT_ID,
+                DEPT_HEAD_SERIAL_NO
             )VALUES ?
         `;
-        const queryValues = results3.map(row => [row.TEACHER_SERIAL_NO, courseId, deptId]);
+        const queryValues = results3.map(row => [deptId, row.TEACHER_SERIAL_NO]);
         await pool.query(query, [queryValues]);
         console.log("teacher assigned successfully");
         return { success: true, message: 'Courses offered successfully' };
@@ -81,4 +62,4 @@ const teacherMarkAssignFunction = async (data) => {
     }
 };
 
-module.exports = { teacherMarkAssignFunction };
+module.exports = { deptHeadAssign };

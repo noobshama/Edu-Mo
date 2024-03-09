@@ -27,7 +27,7 @@ const getCourseToAssignByDept = async (deptName) => {
         // console.log(deptId);
         const query = `
         SELECT DISTINCT 
-        (SELECT D.DEPT_NAME FROM DEPARTMENT D WHERE CO.DEPT_ID = D.DEPT_ID) AS DEPT_NAME, 
+        (SELECT D.DEPT_NAME FROM DEPARTMENT D WHERE C.DEPT_ID = D.DEPT_ID) AS DEPT_NAME, 
         C.LEVEL, 
         C.TERM, 
         C.TITLE, 
@@ -40,10 +40,8 @@ const getCourseToAssignByDept = async (deptName) => {
         JOIN 
             COURSE C ON C.COURSE_ID = CO.COURSE_ID
         WHERE 
-            CO.DEPT_ID = (SELECT D.DEPT_ID FROM DEPARTMENT D WHERE D.DEPT_NAME = 'EEE') AND
-           
-            C.DEPT_ID = (SELECT D.DEPT_ID FROM DEPARTMENT D WHERE D.DEPT_NAME = (SELECT D.DEPT_NAME FROM DEPARTMENT D WHERE C.DEPT_ID=D.DEPT_ID));
-
+            CO.DEPT_ID = (SELECT D.DEPT_ID FROM DEPARTMENT D WHERE D.DEPT_NAME = ?) AND
+            C.DEPT_ID = (SELECT D.DEPT_ID FROM DEPARTMENT D WHERE D.DEPT_NAME = (SELECT D.DEPT_NAME FROM DEPARTMENT D WHERE C.DEPT_ID = D.DEPT_ID));
         `;
         // console.log(results);
         const results = await new Promise((resolve, reject) => {

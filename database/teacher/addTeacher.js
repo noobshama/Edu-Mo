@@ -6,6 +6,23 @@ const addTeacherFunction = async (teacherData) => {
     try {
         console.log("Received teacher data:", teacherData);
         const { teacherId, teacherName, deptName, designation, password, userId } = teacherData;
+        const passwordCheckQuery = `
+        SELECT check_password_length(?) AS valid_password
+    `;
+
+        // Executing the password check query
+        const passwordCheckResult = await new Promise((resolve, reject) => {
+            pool.query(passwordCheckQuery, [password], (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+        if (!passwordCheckResult[0].valid_password) {
+            return { success: false, message: 'Password needs to be at least 8 characters' };
+        }
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const trimmedDeptName = deptName.trim();
@@ -76,10 +93,7 @@ const addTeacherFunction = async (teacherData) => {
                 const info = await pool.query(query, [serial, teacherName, deptId, designation]);
 
                 const binds = { userId };
-                if(info.success)
-                {
-                    console.log("tttttttttttt");
-                }
+
                 console.log("Teacher added successfully");
 
                 console.log(teacherId);

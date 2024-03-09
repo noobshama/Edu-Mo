@@ -4,22 +4,39 @@ const bcrypt = require('bcrypt');
 const receivedGradePoint = async (userGrades) => {
     try {
         // Iterate over each user ID, course code, and grade triplet
-        for (const { userRoll, courseCode, grade } of userGrades) {
+        for (const { student_roll, courseCode, grade } of userGrades) {
             // Get the course_id from the course table based on the course_code
+            console.log(student_roll);
+            console.log(courseCode);
+            console.log(grade);
             const courseQuery = `SELECT COURSE_ID FROM course WHERE COURSE_CODE = ? `;
-            const [courseResult] = await pool.query(courseQuery, [courseCode]);
-            const courseId = courseResult[0].COURSE_ID;
-
-            // Perform database update operation for each user and course
-            const query = `UPDATE ENROLLMENT SET GRADE = ? WHERE STUDENT_SERIAL_NO = (SELECT USER_SERIAL_NO FROM user WHERE USER_ID = ?) AND  COURSE_ID = ?`;
             await new Promise((resolve, reject) => {
-                pool.query(query, [grade, userRoll, courseId], (error, results) => {
+                pool.query(courseQuery, [courseCode], (error, results) => {
                     if (error) {
-                        console.error('Error updating grades:', error);
+                        console.error('Error getting course ID:', error);
                         reject(error);
                     } else {
-                        console.log(`Grade updated for User ID ${userRoll} and Course Code ${courseCode}`);
-                        resolve();
+                        // Check if the query returned any results
+                        if (results.length > 0) {
+                            // Extract the COURSE_ID from the result
+                            const courseId = results[0].COURSE_ID;
+                            console.log(`COURSE_ID ${courseId} and Course Code ${courseCode}`);
+                            
+                            // Now you can use courseId in your update query
+                            const updateQuery = `UPDATE ENROLLMENT SET GRADE = ? WHERE STUDENT_SERIAL_NO = (SELECT USER_SERIAL_NO FROM USER WHERE USER_ID = ?) AND COURSE_ID = ?`;
+                            pool.query(updateQuery, [grade, student_roll, courseId], (updateError, updateResults) => {
+                                if (updateError) {
+                                    console.error('Error updating grades:', updateError);
+                                    reject(updateError);
+                                } else {
+                                    console.log(`Grade updated for Student Roll ${student_roll} and Course Code ${courseCode}`);
+                                    resolve();
+                                }
+                            });
+                        } else {
+                            console.log(`No course found with code ${courseCode}`);
+                            resolve();
+                        }
                     }
                 });
             });

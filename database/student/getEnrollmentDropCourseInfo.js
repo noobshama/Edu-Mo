@@ -17,7 +17,7 @@ const getEnrollmentDropCourseInfo = async (userId) => {
             JOIN COURSE C
             ON C.COURSE_ID = E.COURSE_ID AND S.LEVEL = C.LEVEL AND S.TERM = C.TERM
             WHERE 
-            S.STUDENT_SERIAL_NO = (SELECT USER_SERIAL_NO FROM USER U WHERE U.USER_ID = ?);
+            S.STUDENT_SERIAL_NO = (SELECT USER_SERIAL_NO FROM USER U WHERE U.USER_ID = ?) AND E.STATUS <> 'waiting for delete';
         `;
         const results = await new Promise((resolve, reject) => {
             pool.query(query,[userId], (error, results) => { 
